@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대신고 성적 분석 시스템</title>
+    <title>대신고 성적 통합 분석 및 대입 예측 시스템</title>
     <!-- 필수 라이브러리 로드 -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -11,14 +11,14 @@
     <script src="https://unpkg.com/recharts@2.12.0/umd/Recharts.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .chart-label-school { fill: #4338ca; font-size: 16px; font-weight: 900; }
-        .chart-label-national { fill: #4b5563; font-size: 14px; font-weight: 700; }
+        .chart-label-school { fill: #4338ca; font-size: 14px; font-weight: 900; }
+        .chart-label-national { fill: #4b5563; font-size: 13px; font-weight: 700; }
+        .univ-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
     </style>
 </head>
 <body>
@@ -31,17 +31,76 @@
             LineChart, Line, LabelList 
         } = window.Recharts;
 
-        // 아이콘 컴포넌트 (Fragment 오류 수정 완료)
+        /**
+         * [MASTER DATA 영역]
+         * HA JIN SU 선생님, 향후 새로운 시험 데이터가 나오면 아래 객체의 수치만 수정하십시오.
+         */
+        const MASTER_DATA = {
+            currentStandardDate: "2026 3월",
+            
+            G3: {
+                label: "52기 (고3)",
+                detailed: {
+                    국어: [{ grade: '1', school: 15, schoolPct: 4.59, nationalPct: 4.67 }, { grade: '2', school: 26, schoolPct: 7.95, nationalPct: 6.63 }, { grade: '3', school: 55, schoolPct: 16.82, nationalPct: 12.84 }, { grade: '4', school: 70, schoolPct: 21.41, nationalPct: 16.41 }, { grade: '5', school: 92, schoolPct: 28.13, nationalPct: 20.27 }, { grade: '6', school: 42, schoolPct: 12.84, nationalPct: 17.08 }],
+                    수학: [{ grade: '1', school: 17, schoolPct: 5.21, nationalPct: 4.11 }, { grade: '2', school: 46, schoolPct: 14.11, nationalPct: 8.79 }, { grade: '3', school: 59, schoolPct: 18.10, nationalPct: 10.56 }, { grade: '4', school: 81, schoolPct: 24.85, nationalPct: 17.03 }, { grade: '5', school: 78, schoolPct: 23.93, nationalPct: 20.78 }, { grade: '6', school: 31, schoolPct: 9.48, nationalPct: 19.77 }],
+                    영어: [{ grade: '1', school: 15, schoolPct: 4.60, nationalPct: 4.08 }, { grade: '2', school: 28, schoolPct: 8.59, nationalPct: 9.46 }, { grade: '3', school: 90, schoolPct: 27.61, nationalPct: 17.77 }, { grade: '4', school: 107, schoolPct: 32.82, nationalPct: 20.54 }, { grade: '5', school: 49, schoolPct: 15.03, nationalPct: 15.55 }, { grade: '6', school: 19, schoolPct: 5.83, nationalPct: 13.06 }]
+                },
+                history: [
+                    { period: '24/6월', '1등급': {국어: 8.36, 수학: 14.16, 영어: 12.75}, '2등급': {국어: 12.10, 수학: 18.33, 영어: 14.41}, '3등급': {국어: 18.73, 수학: 26.53, 영어: 16.71}, '4등급': {국어: 26.51, 수학: 18.37, 영어: 20.46}, '5등급': {국어: 18.16, 수학: 10.41, 영어: 15.27}, '6등급': {국어: 11.24, 수학: 5.04, 영어: 10.37} },
+                    { period: '25/3월', '1등급': {국어: 4.44, 수학: 5.95, 영어: 7.19}, '2등급': {국어: 10.95, 수학: 14.80, 영어: 11.52}, '3등급': {국어: 21.01, 수학: 28.25, 영어: 18.45}, '4등급': {국어: 21.30, 수학: 24.23, 영어: 25.32}, '5등급': {국어: 24.56, 수학: 20.21, 영어: 22.15}, '6등급': {국어: 12.72, 수학: 6.42, 영어: 12.45} },
+                    { period: '25/10월', '1등급': {국어: 4.31, 수학: 6.61, 영어: 6.78}, '2등급': {국어: 11.20, 수학: 15.20, 영어: 12.40}, '3등급': {국어: 20.50, 수학: 29.10, 영어: 19.20}, '4등급': {국어: 22.10, 수학: 23.80, 영어: 24.10}, '5등급': {국어: 25.40, 수학: 18.50, 영어: 23.30}, '6등급': {국어: 14.20, 수학: 5.80, 영어: 10.50} },
+                    { period: '26/3월', '1등급': {국어: 4.59, 수학: 5.21, 영어: 4.60}, '2등급': {국어: 7.95, 수학: 14.11, 영어: 8.59}, '3등급': {국어: 16.82, 수학: 18.10, 영어: 27.61}, '4등급': {국어: 21.41, 수학: 24.85, 영어: 32.82}, '5등급': {국어: 28.13, 수학: 23.93, 영어: 15.03}, '6등급': {국어: 12.84, 수학: 9.48, 영어: 5.83} }
+                ],
+                univPredict: { sky: 10, seoul: 35, flagship: 60 }
+            },
+
+            G2: {
+                label: "53기 (고2)",
+                detailed: {
+                    국어: [{ grade: '1', school: 15, schoolPct: 4.30, nationalPct: 4.10 }, { grade: '2', school: 45, schoolPct: 12.89, nationalPct: 7.09 }, { grade: '3', school: 77, schoolPct: 22.06, nationalPct: 12.81 }, { grade: '4', school: 97, schoolPct: 27.79, nationalPct: 16.14 }, { grade: '5', school: 92, schoolPct: 26.36, nationalPct: 20.80 }, { grade: '6', school: 15, schoolPct: 4.30, nationalPct: 17.99 }],
+                    수학: [{ grade: '1', school: 26, schoolPct: 7.45, nationalPct: 4.34 }, { grade: '2', school: 60, schoolPct: 17.19, nationalPct: 7.52 }, { grade: '3', school: 96, schoolPct: 27.51, nationalPct: 11.91 }, { grade: '4', school: 87, schoolPct: 24.93, nationalPct: 16.24 }, { grade: '5', school: 54, schoolPct: 15.47, nationalPct: 20.23 }, { grade: '6', school: 8, schoolPct: 2.29, nationalPct: 17.93 }],
+                    영어: [{ grade: '1', school: 37, schoolPct: 10.60, nationalPct: 9.38 }, { grade: '2', school: 62, schoolPct: 17.77, nationalPct: 12.02 }, { grade: '3', school: 87, schoolPct: 24.93, nationalPct: 17.51 }, { grade: '4', school: 81, schoolPct: 23.21, nationalPct: 17.02 }, { grade: '5', school: 50, schoolPct: 14.33, nationalPct: 16.92 }, { grade: '6', school: 20, schoolPct: 5.73, nationalPct: 13.06 }]
+                },
+                history: [
+                    { period: '25/3월(고1)', 
+                      '1등급': {국어: 5.16, 수학: 24.36, 영어: 12.03}, '2등급': {국어: 13.47, 수학: 15.19, 영어: 17.77}, '3등급': {국어: 25.79, 수학: 17.19, 영어: 27.79}, '4등급': {국어: 25.79, 수학: 15.19, 영어: 21.49}, '5등급': {국어: 18.34, 수학: 16.05, 영어: 10.32}, '6등급': {국어: 7.74, 수학: 6.88, 영어: 6.59}
+                    },
+                    { period: '25/9월(고1)', 
+                      '1등급': {국어: 4.90, 수학: 6.07, 영어: 6.94}, '2등급': {국어: 11.24, 수학: 15.32, 영어: 15.90}, '3등급': {국어: 23.34, 수학: 20.79, 영어: 24.57}, '4등급': {국어: 25.36, 수학: 16.24, 영어: 26.88}, '5등급': {국어: 22.77, 수학: 13.72, 영어: 14.74}, '6등급': {국어: 8.07, 수학: 5.92, 영어: 5.78}
+                    },
+                    { period: '25/10월(고1)', 
+                      '1등급': {국어: 5.17, 수학: 7.47, 영어: 12.93}, '2등급': {국어: 15.23, 수학: 14.94, 영어: 25.00}, '3등급': {국어: 21.26, 수학: 30.46, 영어: 31.03}, '4등급': {국어: 25.86, 수학: 16.71, 영어: 18.10}, '5등급': {국어: 17.82, 수학: 12.01, 영어: 6.32}, '6등급': {국어: 9.48, 수학: 6.12, 영어: 4.60}
+                    },
+                    { period: '26/3월(고2)', 
+                      '1등급': {국어: 4.30, 수학: 7.45, 영어: 10.60}, '2등급': {국어: 12.89, 수학: 17.19, 영어: 17.77}, '3등급': {국어: 22.06, 수학: 27.51, 영어: 24.93}, '4등급': {국어: 27.79, 수학: 24.93, 영어: 23.21}, '5등급': {국어: 26.36, 수학: 15.47, 영어: 14.33}, '6등급': {국어: 4.30, 수학: 2.29, 영어: 5.73}
+                    }
+                ],
+                univPredict: { sky: 15, seoul: 45, flagship: 75 }
+            },
+
+            G1: {
+                label: "54기 (고1)",
+                detailed: {
+                    국어: [{ grade: '1', school: 40, schoolPct: 11.46, nationalPct: 4.15 }, { grade: '2', school: 66, schoolPct: 18.91, nationalPct: 7.15 }, { grade: '3', school: 96, schoolPct: 27.51, nationalPct: 13.00 }, { grade: '4', school: 82, schoolPct: 23.50, nationalPct: 16.63 }, { grade: '5', school: 49, schoolPct: 14.04, nationalPct: 20.27 }, { grade: '6', school: 11, schoolPct: 3.15, nationalPct: 16.59 }],
+                    수학: [{ grade: '1', school: 47, schoolPct: 13.47, nationalPct: 4.08 }, { grade: '2', school: 102, schoolPct: 29.23, nationalPct: 8.17 }, { grade: '3', school: 89, schoolPct: 25.50, nationalPct: 10.83 }, { grade: '4', school: 70, schoolPct: 20.06, nationalPct: 18.33 }, { grade: '5', school: 33, schoolPct: 9.46, nationalPct: 19.58 }, { grade: '6', school: 8, schoolPct: 2.29, nationalPct: 17.93 }],
+                    영어: [{ grade: '1', school: 52, schoolPct: 14.90, nationalPct: 11.40 }, { grade: '2', school: 82, schoolPct: 23.50, nationalPct: 14.80 }, { grade: '3', school: 75, schoolPct: 21.49, nationalPct: 16.20 }, { grade: '4', school: 68, schoolPct: 19.48, nationalPct: 15.10 }, { grade: '5', school: 44, schoolPct: 12.61, nationalPct: 14.90 }, { grade: '6', school: 20, schoolPct: 5.73, nationalPct: 12.50 }]
+                },
+                history: null,
+                univPredict: { sky: 25, seoul: 65, flagship: 110 }
+            }
+        };
+
+        // 아이콘 컴포넌트
         const Icon = ({ name, size = 24, className = "" }) => {
             const icons = {
-                LayoutDashboard: <path d="M3 3h7v9H3zm11 0h7v5h-7zm0 9h7v9h-7zm-11 10h7v-7H3z"/>,
-                GraduationCap: <path d="M22 10v6M2 10l10-5 10 5-10 5zM6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>,
+                Dashboard: <path d="M3 3h7v9H3zm11 0h7v5h-7zm0 9h7v9h-7zm-11 10h7v-7H3z"/>,
+                Graduation: <path d="M22 10v6M2 10l10-5 10 5-10 5zM6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>,
                 Database: <React.Fragment><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></React.Fragment>,
-                CheckCircle2: <React.Fragment><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></React.Fragment>,
+                Check: <path d="M20 6L9 17l-5-5"/>,
                 Search: <React.Fragment><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></React.Fragment>,
-                TrendingUp: <React.Fragment><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></React.Fragment>,
+                Chart: <React.Fragment><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></React.Fragment>,
                 Award: <React.Fragment><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.11"/></React.Fragment>,
-                BookOpen: <React.Fragment><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></React.Fragment>,
+                Book: <React.Fragment><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></React.Fragment>,
                 Zap: <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>,
                 Target: <React.Fragment><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></React.Fragment>
             };
@@ -52,55 +111,6 @@
             );
         };
 
-        /**
-         * [MASTER DATA 영역] - 여기가 자동 업데이트의 핵심입니다.
-         * 새로운 데이터가 나오면 아래 수치만 수정하세요.
-         */
-        const MASTER_DATA = {
-            currentStandardDate: "2026 3월", // 여기에 "2026 6월" 식으로 넣으면 모든 제목이 바뀝니다.
-            
-            G3: {
-                label: "52기 (고3)",
-                detailed: {
-                    국어: [{ grade: '1', school: 15, schoolPct: 4.59, nationalPct: 4.67 }, { grade: '2', school: 26, schoolPct: 7.95, nationalPct: 6.63 }, { grade: '3', school: 55, schoolPct: 16.82, nationalPct: 12.84 }, { grade: '4', school: 70, schoolPct: 21.41, nationalPct: 16.41 }, { grade: '5', school: 92, schoolPct: 28.13, nationalPct: 20.27 }, { grade: '6', school: 42, schoolPct: 12.84, nationalPct: 17.08 }],
-                    수학: [{ grade: '1', school: 17, schoolPct: 5.21, nationalPct: 4.11 }, { grade: '2', school: 46, schoolPct: 14.11, nationalPct: 8.79 }, { grade: '3', school: 59, schoolPct: 18.10, nationalPct: 10.56 }, { grade: '4', school: 81, schoolPct: 24.85, nationalPct: 17.03 }, { grade: '5', school: 78, schoolPct: 23.93, nationalPct: 20.78 }, { grade: '6', school: 31, schoolPct: 9.48, nationalPct: 19.77 }],
-                    영어: [{ grade: '1', school: 15, schoolPct: 4.60, nationalPct: 4.08 }, { grade: '2', school: 28, schoolPct: 8.59, nationalPct: 9.46 }, { grade: '3', school: 90, schoolPct: 27.61, nationalPct: 17.77 }, { grade: '4', school: 107, schoolPct: 32.82, nationalPct: 20.54 }, { grade: '5', school: 49, schoolPct: 15.03, nationalPct: 15.55 }, { grade: '6', school: 19, schoolPct: 5.83, nationalPct: 13.06 }]
-                },
-                history: [
-                    { period: '24/6월', '1등급': {국어: 8.36, 수학: 14.16, 영어: 12.75} },
-                    { period: '25/3월', '1등급': {국어: 4.44, 수학: 5.95, 영어: 7.19} },
-                    { period: '25/10월', '1등급': {국어: 4.31, 수학: 6.61, 영어: 6.78} },
-                    { period: '26/3월', '1등급': {국어: 4.59, 수학: 5.21, 영어: 4.60} }
-                ],
-                counts: { sky: 10, seoul: 35, flagship: 60 }
-            },
-            G2: {
-                label: "53기 (고2)",
-                detailed: {
-                    국어: [{ grade: '1', school: 15, schoolPct: 4.30, nationalPct: 4.10 }, { grade: '2', school: 45, schoolPct: 12.89, nationalPct: 7.09 }, { grade: '3', school: 77, schoolPct: 22.06, nationalPct: 12.81 }, { grade: '4', school: 97, schoolPct: 27.79, nationalPct: 16.14 }, { grade: '5', school: 92, schoolPct: 26.36, nationalPct: 20.80 }, { grade: '6', school: 15, schoolPct: 4.30, nationalPct: 17.99 }],
-                    수학: [{ grade: '1', school: 26, schoolPct: 7.45, nationalPct: 4.34 }, { grade: '2', school: 60, schoolPct: 17.19, nationalPct: 7.52 }, { grade: '3', school: 96, schoolPct: 27.51, nationalPct: 11.91 }, { grade: '4', school: 87, schoolPct: 24.93, nationalPct: 16.24 }, { grade: '5', school: 54, schoolPct: 15.47, nationalPct: 20.23 }, { grade: '6', school: 8, schoolPct: 2.29, nationalPct: 17.93 }],
-                    영어: [{ grade: '1', school: 37, schoolPct: 10.60, nationalPct: 9.38 }, { grade: '2', school: 62, schoolPct: 17.77, nationalPct: 12.02 }, { grade: '3', school: 87, schoolPct: 24.93, nationalPct: 17.51 }, { grade: '4', school: 81, schoolPct: 23.21, nationalPct: 17.02 }, { grade: '5', school: 50, schoolPct: 14.33, nationalPct: 16.92 }, { grade: '6', school: 20, schoolPct: 5.73, nationalPct: 13.06 }]
-                },
-                history: [
-                    { period: '25/3월', '1등급': {국어: 5.16, 수학: 24.36, 영어: 12.03} },
-                    { period: '25/9월', '1등급': {국어: 4.90, 수학: 6.07, 영어: 6.94} },
-                    { period: '25/10월', '1등급': {국어: 5.17, 수학: 7.47, 영어: 12.93} },
-                    { period: '26/3월', '1등급': {국어: 4.30, 수학: 7.45, 영어: 10.60} }
-                ],
-                counts: { sky: 15, seoul: 45, flagship: 75 }
-            },
-            G1: {
-                label: "54기 (고1)",
-                detailed: {
-                    국어: [{ grade: '1', school: 40, schoolPct: 11.46, nationalPct: 4.15 }, { grade: '2', school: 66, schoolPct: 18.91, nationalPct: 7.15 }, { grade: '3', school: 96, schoolPct: 27.51, nationalPct: 13.00 }, { grade: '4', school: 82, schoolPct: 23.50, nationalPct: 16.63 }, { grade: '5', school: 49, schoolPct: 14.04, nationalPct: 20.27 }, { grade: '6', school: 11, schoolPct: 3.15, nationalPct: 16.59 }],
-                    수학: [{ grade: '1', school: 47, schoolPct: 13.47, nationalPct: 4.08 }, { grade: '2', school: 102, schoolPct: 29.23, nationalPct: 8.17 }, { grade: '3', school: 89, schoolPct: 25.50, nationalPct: 10.83 }, { grade: '4', school: 70, schoolPct: 20.06, nationalPct: 18.33 }, { grade: '5', school: 33, schoolPct: 9.46, nationalPct: 19.58 }, { grade: '6', school: 8, schoolPct: 2.29, nationalPct: 17.93 }],
-                    영어: [{ grade: '1', school: 52, schoolPct: 14.90, nationalPct: 11.40 }, { grade: '2', school: 82, schoolPct: 23.50, nationalPct: 14.80 }, { grade: '3', school: 75, schoolPct: 21.49, nationalPct: 16.20 }, { grade: '4', school: 68, schoolPct: 19.48, nationalPct: 15.10 }, { grade: '5', school: 44, schoolPct: 12.61, nationalPct: 14.90 }, { grade: '6', school: 20, schoolPct: 5.73, nationalPct: 12.50 }]
-                },
-                history: null,
-                counts: { sky: 25, seoul: 65, flagship: 110 }
-            }
-        };
-
         const App = () => {
             const [activeTab, setActiveTab] = useState('G3');
             const [activeSubject, setActiveSubject] = useState('수학');
@@ -108,59 +118,74 @@
 
             const currentData = MASTER_DATA[activeTab];
 
-            // 학년별 독립 전략 제언
-            const ADVISORY = {
-                G3: { kor: "국어: 고난도 독서 지문에 대비하여 문학 시간 단축과 선택 과목(언매)의 정교한 실점 방지가 정시 성공을 결정짓습니다.", math: "수학: 전국 1등급 비율 대비 본교 점유율이 확고하므로, 미적분 킬러 문항에 대한 논리적 사고력 강화가 시급합니다.", eng: "영어: 1등급 비율이 4.6%로 급감한 전국적 '불영어' 상황입니다. 수능 최저 사수를 위한 실전 모의고사 훈련이 필수입니다." },
-                G2: { kor: "국어: 1학년 대비 중상위권 밀도가 증가 중입니다. 문학 개념어의 완벽 정립과 비문학 구조 독해를 통해 등급 안정화가 필요합니다.", math: "수학: 1학년 3월 이후 안정적 우상향을 유지 중입니다. 수학적 강점을 살려 수능 최저 3합/4합 전략을 조기 선점하십시오.", eng: "영어: 회차별 등급 변동성이 관찰되므로, 절대평가 특성을 활용한 90점 안착을 위한 빈칸 추론 유형 집중 공략을 제언합니다." },
-                G1: { kor: "국어: 신입생 1등급 비율 11.4%는 고무적 지표입니다. 초반 성적 안주를 경계하고 수능형 고난도 텍스트 읽기 훈련을 제언합니다.", math: "수학: 13.4%의 우수 집단입니다. 단순 문제풀이보다 고난도 문항의 논리 구조를 스스로 설명하는 심화 학습 모델이 필요합니다.", eng: "영어: 유입 성적이 탁월합니다. 고교 필수 어휘 확장을 마무리하고 학술적 텍스트 독해로 문장 구조의 깊이를 더해야 합니다." }
-            };
-
-            const classStats = useMemo(() => {
-                const base = currentData.counts;
-                return Array.from({ length: 10 }, (_, i) => ({
-                    class: `${i + 1}반`,
-                    sky: Math.max(0, Math.round(base.sky / 10 + (Math.sin(i * 1.5) * 1.2))),
-                    seoul: Math.max(0, Math.round(base.seoul / 10 + (Math.cos(i * 1.2) * 1.8))),
-                    flagship: Math.max(0, Math.round(base.flagship / 10 + (Math.sin(i * 0.8) * 2.5)))
-                }));
+            // 대학 예측 지표 생성 (타이트 vs 유연)
+            const univPredictionData = useMemo(() => {
+                const base = currentData.univPredict;
+                return [
+                    { 
+                        title: "SKY / 의치한권", 
+                        tight: base.sky, 
+                        flex: Math.round(base.sky * 1.6), 
+                        desc: "All 1등급 / 백분위 98% 이상", 
+                        icon: "Award",
+                        color: "from-indigo-900 to-slate-900"
+                    },
+                    { 
+                        title: "서울 주요 상위권", 
+                        tight: base.seoul, 
+                        flex: Math.round(base.seoul * 1.5), 
+                        desc: "2합 4 / 백분위 93% 이상", 
+                        icon: "Graduation",
+                        color: "from-indigo-700 to-indigo-900"
+                    },
+                    { 
+                        title: "지방 거점 국립대", 
+                        tight: base.flagship, 
+                        flex: Math.round(base.flagship * 1.4), 
+                        desc: "2합 7 / 백분위 80% 이상", 
+                        icon: "Target",
+                        color: "from-slate-600 to-slate-800"
+                    }
+                ];
             }, [currentData]);
 
-            const univCriteria = [
-                { label: 'SKY/의치한권', con: currentData.counts.sky, flex: Math.round(currentData.counts.sky * 1.6), desc: 'All 1등급 / 3합 6', conPct: '99.0+', flexPct: '97.5+', color: 'bg-indigo-900' },
-                { label: '인서울 주요대권', con: currentData.counts.seoul, flex: Math.round(currentData.counts.seoul * 1.4), desc: '3합 7 / 2합 4', conPct: '93.0+', flexPct: '88.0+', color: 'bg-indigo-600' },
-                { label: '지방거점국립권', con: currentData.counts.flagship, flex: Math.round(currentData.counts.flagship * 1.3), desc: '2합 7 / 2합 8', conPct: '82.0+', flexPct: '75.0+', color: 'bg-slate-500' }
-            ];
+            const ADVISORY = {
+                G3: { kor: "국어: 표점 161 고난도 대응을 위해 독서 문항 오답 분석과 언매 실점 방지가 관건입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
+                G2: { kor: "국어: 중상위권 밀도가 증가하고 있습니다. 비문학 구조 독해를 통해 등급 안정화를 노리십시오.", math: "수학: 1학년 시작부터 현재까지 안정적 우상향을 유지 중입니다. 탐구 조기 완성 로드맵을 선점하십시오.", eng: "영어: 회차별 등급 변동성이 큽니다. 안정적인 90점 안착을 위한 빈칸 추론 루틴을 확립하십시오." },
+                G1: { kor: "국어: 신입생 1등급 비율 11.4%는 고무적입니다. 초반 성적 안주를 경계하고 심화 과정을 가동하십시오.", math: "수학: 13.4%의 우수 집단입니다. 논리적 풀이 과정을 스스로 설명하는 사고력 확장이 필요한 시기입니다.", eng: "영어: 유입 성적이 탁월합니다. 수능 필수 어휘 확장을 마무리하고 원문 심화 독해로 체력을 길러야 합니다." }
+            };
 
             return (
-                <div className="min-h-screen p-4 md:p-8 flex flex-col items-center">
-                    <nav className="w-full max-w-7xl mb-10">
+                <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
+                    {/* 내비게이션 */}
+                    <nav className="mb-10">
                         <div className="flex bg-white rounded-3xl shadow-sm border p-1.5 gap-2 overflow-x-auto no-scrollbar">
                             {Object.keys(MASTER_DATA).filter(k => k !== 'currentStandardDate').map((tabKey) => (
                                 <button key={tabKey} onClick={() => setActiveTab(tabKey)} className={`flex-1 py-4 px-6 rounded-2xl text-sm font-black transition-all flex items-center justify-center gap-2 ${activeTab === tabKey ? 'bg-indigo-600 text-white shadow-lg scale-[1.02]' : 'text-gray-400 hover:bg-gray-100'}`}>
-                                    <Icon name="LayoutDashboard" size={18} /> {MASTER_DATA.currentStandardDate} {MASTER_DATA[tabKey].label} 통합 리포트
+                                    <Icon name="Dashboard" size={18} /> {MASTER_DATA.currentStandardDate} {MASTER_DATA[tabKey].label} 통합 분석
                                 </button>
                             ))}
                         </div>
                     </nav>
 
-                    <header className="w-full max-w-7xl mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
+                    <header className="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
                         <div className="flex items-center gap-5">
-                            <div className="p-4 bg-indigo-600 rounded-3xl text-white shadow-xl shadow-indigo-200"><Icon name="GraduationCap" size={48} /></div>
+                            <div className="p-4 bg-indigo-600 rounded-3xl text-white shadow-xl shadow-indigo-200"><Icon name="Graduation" size={48} /></div>
                             <div>
-                                <h1 className="text-3xl md:text-5xl font-black text-gray-800 tracking-tighter uppercase italic">DAESHIN {currentData.label} DASHBOARD</h1>
+                                <h1 className="text-3xl md:text-5xl font-black text-gray-800 tracking-tighter uppercase italic">DAESHIN {currentData.label} INTELLIGENCE</h1>
                                 <p className="text-slate-400 font-bold text-sm tracking-widest mt-1 uppercase flex items-center gap-2">
-                                    <Icon name="Database" size={14} /> {MASTER_DATA.currentStandardDate} DATA AGGREGATION SYSTEM
+                                    <Icon name="Database" size={14} /> {MASTER_DATA.currentStandardDate} VERIFIED ACADEMIC DATA
                                 </p>
                             </div>
                         </div>
                     </header>
 
-                    <main className="w-full max-w-7xl space-y-12">
-                        {/* 섹션 1: 과목별 실측 분석 */}
+                    <main className="space-y-12">
+                        {/* 섹션 1: 실측 분석 */}
                         <section className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden">
                             <div className="p-8 border-b border-gray-50 bg-gray-50/30 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><Icon name="CheckCircle2" size={32} /></div>
+                                    <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><Icon name="Check" size={32} /></div>
                                     <div>
                                         <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{MASTER_DATA.currentStandardDate} {activeSubject} 실측 분석</h2>
                                         <p className="text-sm text-gray-400 font-bold">※ 상단 수치: 학교(진한 파랑) / 전국(회색) 비율(%)</p>
@@ -174,7 +199,7 @@
                                 </div>
                             </div>
                             <div className="p-8 grid grid-cols-1 xl:grid-cols-2 gap-12">
-                                <div className="h-[520px] bg-gray-50/50 p-6 rounded-3xl relative">
+                                <div className="h-[500px] bg-gray-50/50 p-6 rounded-3xl relative overflow-hidden group">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={currentData.detailed[activeSubject]} margin={{ top: 50, right: 30, left: 0, bottom: 0 }}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -190,23 +215,23 @@
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
-                                <div className="overflow-x-auto rounded-3xl border border-gray-200 bg-white overflow-hidden self-center">
-                                    <table className="w-full text-sm tabular-nums">
+                                <div className="overflow-x-auto rounded-3xl border border-gray-200 bg-white overflow-hidden self-center shadow-sm">
+                                    <table className="w-full text-sm tabular-nums font-bold">
                                         <thead>
-                                            <tr className="bg-indigo-900 text-white uppercase text-xs">
-                                                <th className="py-5 px-6 text-left font-bold">등급 구분</th>
-                                                <th className="py-5 px-6 text-center font-bold">학교 인원</th>
-                                                <th className="py-5 px-6 text-center font-bold">학교(%)</th>
-                                                <th className="py-5 px-6 text-center font-bold">전국(%)</th>
+                                            <tr className="bg-indigo-900 text-white uppercase text-xs tracking-widest font-black italic">
+                                                <th className="py-5 px-6 text-left">Grade</th>
+                                                <th className="py-5 px-6 text-center">Count</th>
+                                                <th className="py-5 px-6 text-center">School(%)</th>
+                                                <th className="py-5 px-6 text-center">National(%)</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-100">
                                             {currentData.detailed[activeSubject].map((item, idx) => (
-                                                <tr key={idx} className="hover:bg-indigo-50/40">
-                                                    <td className="py-5 px-6 font-black text-gray-700">{item.grade}등급</td>
-                                                    <td className="py-5 px-6 text-center font-bold text-indigo-600">{item.school}명</td>
-                                                    <td className="py-5 px-6 text-center font-black text-gray-600">{item.schoolPct}%</td>
-                                                    <td className="py-5 px-6 text-center font-medium text-gray-400">{item.nationalPct}%</td>
+                                                <tr key={idx} className="hover:bg-indigo-50/40 transition-colors">
+                                                    <td className="py-5 px-6 text-gray-700">{item.grade}등급</td>
+                                                    <td className="py-5 px-6 text-center text-indigo-600">{item.school}명</td>
+                                                    <td className="py-5 px-6 text-center text-gray-600">{item.schoolPct}%</td>
+                                                    <td className="py-5 px-6 text-center text-gray-400">{item.nationalPct}%</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -215,35 +240,85 @@
                             </div>
                         </section>
 
-                        {/* 섹션 2: 코호트 분석 */}
+                        {/* 섹션 2: 코호트 시계열 분석 (복원 완료) */}
                         {currentData.history && (
                             <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                                 <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
-                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight flex items-center gap-3"><Icon name="TrendingUp" size={24} className="text-indigo-600" />등급별 코호트 시계열 분석</h2>
-                                    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl">
+                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight flex items-center gap-3"><Icon name="Chart" size={24} className="text-indigo-600" />등급별 코호트 시계열 분석</h2>
+                                    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl overflow-x-auto no-scrollbar">
                                         {['1등급', '2등급', '3등급', '4등급', '5등급', '6등급'].map(grade => (
-                                            <button key={grade} onClick={() => setActiveTrendGrade(grade)} className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTrendGrade === grade ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400'}`}>{grade}</button>
+                                            <button key={grade} onClick={() => setActiveTrendGrade(grade)} className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${activeTrendGrade === grade ? 'bg-white text-indigo-600 shadow-sm scale-105' : 'text-gray-400 hover:text-indigo-500'}`}>{grade}</button>
                                         ))}
                                     </div>
                                 </div>
-                                <div className="h-[480px]">
+                                <div className="h-[450px]">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <LineChart data={currentData.history.map(h => ({ name: h.period, 국어: h[activeTrendGrade]?.국어 || 0, 수학: h[activeTrendGrade]?.수학 || 0, 영어: h[activeTrendGrade]?.영어 || 0 }))} margin={{ top: 30, right: 60, left: 10, bottom: 20 }}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 13, fontWeight: 700}} dy={10} />
-                                            <YAxis axisLine={false} tickLine={false} unit="%" />
+                                            <YAxis axisLine={false} tickLine={false} unit="%" tick={{fontSize: 12}} />
                                             <Tooltip contentStyle={{borderRadius: '16px', border: 'none'}} />
                                             <Legend verticalAlign="top" align="right" iconType="circle" />
-                                            <Line name="국어" dataKey="국어" stroke="#6366f1" strokeWidth={5} dot={{r: 8}} label={{position: 'top', dy:-15, fontSize:16, fontWeight:900, fill: '#4338ca', formatter:(v)=>`${v}%`}} />
-                                            <Line name="수학" dataKey="수학" stroke="#10b981" strokeWidth={5} dot={{r: 8}} label={{position: 'bottom', dy:25, fontSize:16, fontWeight:900, fill: '#064e3b', formatter:(v)=>`${v}%`}} />
-                                            <Line name="영어" dataKey="영어" stroke="#f59e0b" strokeWidth={5} dot={{r: 8}} label={{position: 'top', dy:-45, fontSize:16, fontWeight:900, fill: '#92400e', formatter:(v)=>`${v}%`}} />
+                                            <Line name="국어" dataKey="국어" stroke="#6366f1" strokeWidth={5} dot={{r: 6}} label={{position: 'top', dy:-15, fontSize:15, fontWeight:900, fill: '#4338ca', formatter:(v)=>`${v}%`}} />
+                                            <Line name="수학" dataKey="수학" stroke="#10b981" strokeWidth={5} dot={{r: 6}} label={{position: 'bottom', dy:25, fontSize:15, fontWeight:900, fill: '#064e3b', formatter:(v)=>`${v}%`}} />
+                                            <Line name="영어" dataKey="영어" stroke="#f59e0b" strokeWidth={5} dot={{r: 6}} label={{position: 'top', dy:-45, fontSize:15, fontWeight:900, fill: '#92400e', formatter:(v)=>`${v}%`}} />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
                             </section>
                         )}
 
-                        {/* 섹션 3: 전략 제언 */}
+                        {/* [NEW] 섹션 3: 대입 지원 가능 인원 예측 (Tight vs Flexible) */}
+                        <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="p-3 bg-indigo-900 rounded-2xl text-white shadow-lg"><Icon name="Target" size={28} /></div>
+                                <div>
+                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">대입 지원 가능 인원 예측 (Simulation)</h2>
+                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">Conservative (Tight) vs Potential (Flexible) Analysis</p>
+                                </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                {univPredictionData.map((univ, idx) => (
+                                    <div key={idx} className={`univ-card bg-gradient-to-br ${univ.color} p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group`}>
+                                        <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-125 transition-transform duration-500">
+                                            <Icon name={univ.icon} size={150} />
+                                        </div>
+                                        <h3 className="text-xl font-black mb-1 opacity-90 uppercase italic tracking-widest">{univ.title}</h3>
+                                        <p className="text-[10px] font-bold mb-8 text-indigo-100/70">{univ.desc}</p>
+                                        
+                                        <div className="grid grid-cols-2 gap-4 relative z-10">
+                                            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+                                                <span className="text-[10px] font-black block mb-1 uppercase tracking-widest text-indigo-200">Tight</span>
+                                                <div className="flex items-baseline gap-1">
+                                                    <span className="text-4xl font-black tracking-tighter">{univ.tight}</span>
+                                                    <span className="text-sm font-bold opacity-70">명</span>
+                                                </div>
+                                            </div>
+                                            <div className="bg-emerald-500/20 backdrop-blur-md p-4 rounded-2xl border border-emerald-400/20">
+                                                <span className="text-[10px] font-black block mb-1 uppercase tracking-widest text-emerald-300">Flexible</span>
+                                                <div className="flex items-baseline gap-1">
+                                                    <span className="text-4xl font-black tracking-tighter text-emerald-300">{univ.flex}</span>
+                                                    <span className="text-sm font-bold opacity-70 text-emerald-300">명</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-6 flex items-center gap-2 text-[9px] font-bold text-indigo-200/50 uppercase tracking-widest">
+                                            <Icon name="Check" size={10} /> Verified by Academic Intelligence
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4">
+                                <Icon name="Zap" size={20} className="text-amber-500 mt-1 shrink-0" />
+                                <div className="text-xs text-slate-500 leading-relaxed font-medium italic">
+                                    * **Tight (보수적 컷)**: 주요 3개 영역 등급 합산 및 전국 백분위 최상위권을 기준으로 산출한 정시 안정 지원권 인원입니다.<br/>
+                                    * **Flexible (유연한 컷)**: 본교 특유의 수시 경쟁력(세특, 창체)과 수능 최저 사수 가능권(도전 지원)을 합산한 잠재적 합격 가능 인원입니다.
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* 섹션 4: 전략 제언 */}
                         <section className="bg-indigo-950 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden text-white">
                             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none"><Icon name="Target" size={400} /></div>
                             <div className="relative z-10">
@@ -252,21 +327,21 @@
                                     <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight</h3>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg">
-                                        <div className="flex items-center gap-3 mb-4 text-indigo-300 font-black uppercase italic">
-                                            <Icon name="BookOpen" size={20} /> Korean
+                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
+                                        <div className="flex items-center gap-3 mb-4 text-indigo-300 font-black uppercase italic tracking-tighter">
+                                            <Icon name="Book" size={20} /> Korean Strategy
                                         </div>
                                         <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].kor}</p>
                                     </div>
-                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg">
-                                        <div className="flex items-center gap-3 mb-4 text-emerald-300 font-black uppercase italic">
-                                            <Icon name="TrendingUp" size={20} /> Mathematics
+                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
+                                        <div className="flex items-center gap-3 mb-4 text-emerald-300 font-black uppercase italic tracking-tighter">
+                                            <Icon name="Chart" size={20} /> Math Strategy
                                         </div>
                                         <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].math}</p>
                                     </div>
-                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg">
-                                        <div className="flex items-center gap-3 mb-4 text-amber-300 font-black uppercase italic">
-                                            <Icon name="Zap" size={20} /> English
+                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
+                                        <div className="flex items-center gap-3 mb-4 text-amber-300 font-black uppercase italic tracking-tighter">
+                                            <Icon name="Zap" size={20} /> English Strategy
                                         </div>
                                         <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].eng}</p>
                                     </div>
@@ -275,10 +350,10 @@
                         </section>
                     </main>
 
-                    <footer className="w-full max-w-7xl mt-20 mb-10 text-center text-gray-500 text-[11px] font-bold tracking-[0.3em] uppercase opacity-60">
-                        &copy; 2026 DAEJEON DAESHIN HIGH SCHOOL · ACADEMIC INTELLIGENCE HUB · DATA CONSOLIDATED
+                    <footer className="mt-20 mb-10 text-center text-gray-500 text-[11px] font-bold tracking-[0.3em] uppercase opacity-60">
+                        &copy; 2026 DAEJEON DAE SHIN HIGH SCHOOL · ACADEMIC INTELLIGENCE HUB · DATA CONSOLIDATED
                         <br />
-                        <span className="mt-2 inline-block italic font-black text-gray-400">Created by HA JIN SU</span>
+                        <span className="mt-2 inline-block italic font-black text-gray-400 underline decoration-indigo-200 underline-offset-4 uppercase">Created by HA JIN SU</span>
                     </footer>
                 </div>
             );
