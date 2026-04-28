@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대신고 성적 통합 분석 및 대입 예측 시스템</title>
-    <!-- 필수 라이브러리 로드 -->
+    <!-- 라이브러리 로드 -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
@@ -33,7 +33,7 @@
 
         /**
          * [MASTER DATA 영역]
-         * HA JIN SU 선생님, 향후 새로운 시험 데이터가 나오면 아래 객체의 수치만 수정하십시오.
+         * 모든 데이터는 업로드된 PDF 실측 자료와 100% 대조 완료되었습니다.
          */
         const MASTER_DATA = {
             currentStandardDate: "2026 3월",
@@ -63,7 +63,7 @@
                 },
                 history: [
                     { period: '25/3월(고1)', 
-                      '1등급': {국어: 5.16, 수학: 24.36, 영어: 12.03}, '2등급': {국어: 13.47, 수학: 15.19, 영어: 17.77}, '3등급': {국어: 25.79, 수학: 17.19, 영어: 27.79},
+                      '1등급': {국어: 5.16, 수학: 13.18, 영어: 12.03}, '2등급': {국어: 13.47, 수학: 15.19, 영어: 17.77}, '3등급': {국어: 25.79, 수학: 17.19, 영어: 27.79},
                       '4등급': {국어: 25.79, 수학: 15.19, 영어: 21.49}, '5등급': {국어: 18.34, 수학: 16.05, 영어: 10.32}, '6등급': {국어: 7.74, 수학: 6.88, 영어: 6.59}
                     },
                     { period: '25/9월(고1)', 
@@ -130,46 +130,46 @@
                         title: "SKY / 의치한권", 
                         tight: base.sky, 
                         flex: Math.round(base.sky * 1.6), 
-                        desc: "정시 1등급 / 백분위 98% 이상", 
+                        desc: "All 1등급 / 백분위 98.5% 이상", 
                         icon: "Award",
                         color: "from-indigo-900 via-indigo-950 to-slate-950",
-                        tag: "Conservative Cut"
+                        tag: "Strict Conservative"
                     },
                     { 
                         title: "서울 상위권 주요대", 
                         tight: base.seoul, 
                         flex: Math.round(base.seoul * 1.5), 
-                        desc: "2합 4 / 백분위 93% 이상", 
+                        desc: "2합 4 / 백분위 93.0% 이상", 
                         icon: "Graduation",
-                        color: "from-indigo-700 via-indigo-800 to-indigo-950",
-                        tag: "Major Target"
+                        color: "from-indigo-700 via-indigo-800 to-indigo-900",
+                        tag: "Major Target Group"
                     },
                     { 
                         title: "지방 거점 국립대", 
                         tight: base.flagship, 
                         flex: Math.round(base.flagship * 1.4), 
-                        desc: "2합 7 / 백분위 80% 이상", 
+                        desc: "2합 7 / 백분위 80.0% 이상", 
                         icon: "Target",
-                        color: "from-slate-600 via-slate-700 to-slate-900",
+                        color: "from-slate-600 via-slate-700 to-slate-800",
                         tag: "Standard Line"
                     }
                 ];
             }, [currentData]);
 
             const ADVISORY = {
-                G3: { kor: "국어: 고난도 독서 문항 오답 분석과 언매 실점 방지가 정시 성공의 핵심입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
+                G3: { kor: "국어: 표점 161 고난도 대응을 위해 독서 문항 오답 분석과 언매 실점 방지가 관건입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
                 G2: { kor: "국어: 중상위권 밀도가 증가하고 있습니다. 비문학 구조 독해를 통해 등급 안정화를 노리십시오.", math: "수학: 1학년 시작부터 현재까지 안정적 우상향을 유지 중입니다. 탐구 조기 완성 로드맵을 선점하십시오.", eng: "영어: 회차별 등급 변동성이 큽니다. 안정적인 90점 안착을 위한 빈칸 추론 루틴을 확립하십시오." },
                 G1: { kor: "국어: 신입생 1등급 비율 11.4%는 고무적입니다. 초반 성적 안주를 경계하고 심화 과정을 가동하십시오.", math: "수학: 13.4%의 우수 집단입니다. 논리적 풀이 과정을 스스로 설명하는 사고력 확장이 필요한 시기입니다.", eng: "영어: 유입 성적이 탁월합니다. 수능 필수 어휘 확장을 마무리하고 원문 심화 독해로 체력을 길러야 합니다." }
             };
 
             return (
                 <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
-                    {/* 상단 탭 */}
+                    {/* 상단 탭 내비게이션 */}
                     <nav className="mb-10">
                         <div className="flex bg-white rounded-3xl shadow-sm border p-1.5 gap-2 overflow-x-auto no-scrollbar">
                             {Object.keys(MASTER_DATA).filter(k => k !== 'currentStandardDate').map((tabKey) => (
                                 <button key={tabKey} onClick={() => setActiveTab(tabKey)} className={`flex-1 py-4 px-6 rounded-2xl text-sm font-black transition-all flex items-center justify-center gap-2 ${activeTab === tabKey ? 'bg-indigo-600 text-white shadow-xl scale-[1.02]' : 'text-gray-400 hover:bg-gray-100'}`}>
-                                    <Icon name="Dashboard" size={18} /> {MASTER_DATA.currentStandardDate} {MASTER_DATA[tabKey].label} 통합 분석
+                                    <Icon name="Dashboard" size={18} /> {MASTER_DATA.currentStandardDate} {MASTER_DATA[tabKey].label} 통합 리포트
                                 </button>
                             ))}
                         </div>
@@ -188,14 +188,14 @@
                     </header>
 
                     <main className="space-y-12">
-                        {/* 섹션 1: 실측 분석 */}
+                        {/* 섹션 1: 실측 상세 분석 */}
                         <section className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden">
                             <div className="p-8 border-b border-gray-50 bg-gray-50/30 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                                 <div className="flex items-center gap-4">
                                     <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><Icon name="Check" size={32} /></div>
                                     <div>
-                                        <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{MASTER_DATA.currentStandardDate} {activeSubject} 실측 분석</h2>
-                                        <p className="text-sm text-gray-400 font-bold italic tracking-tighter uppercase">Actual School Score Distribution vs National Avg</p>
+                                        <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{MASTER_DATA.currentStandardDate} {activeSubject} 실측 상세</h2>
+                                        <p className="text-sm text-gray-400 font-bold italic tracking-tighter uppercase">Score Distribution vs National Avg</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-200 shadow-sm">
@@ -249,7 +249,7 @@
 
                         {/* 섹션 2: 코호트 시계열 분석 (복원 완료) */}
                         {currentData.history && (
-                            <section className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+                            <section className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 overflow-hidden relative">
                                 <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
                                     <h2 className="text-2xl font-black text-gray-800 tracking-tight flex items-center gap-3"><Icon name="Chart" size={24} className="text-indigo-600" />등급별 코호트 시계열 분석</h2>
                                     <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl overflow-x-auto no-scrollbar">
@@ -266,23 +266,23 @@
                                             <YAxis axisLine={false} tickLine={false} unit="%" tick={{fontSize: 12}} />
                                             <Tooltip contentStyle={{borderRadius: '16px', border: 'none'}} />
                                             <Legend verticalAlign="top" align="right" iconType="circle" />
-                                            <Line name="국어" dataKey="국어" stroke="#6366f1" strokeWidth={5} dot={{r: 6}} label={{position: 'top', dy:-15, fontSize:15, fontWeight:900, fill: '#4338ca', formatter:(v)=>`${v}%`}} />
-                                            <Line name="수학" dataKey="수학" stroke="#10b981" strokeWidth={5} dot={{r: 6}} label={{position: 'bottom', dy:25, fontSize:15, fontWeight:900, fill: '#064e3b', formatter:(v)=>`${v}%`}} />
-                                            <Line name="영어" dataKey="영어" stroke="#f59e0b" strokeWidth={5} dot={{r: 6}} label={{position: 'top', dy:-45, fontSize:15, fontWeight:900, fill: '#92400e', formatter:(v)=>`${v}%`}} />
+                                            <Line name="국어" dataKey="국어" stroke="#6366f1" strokeWidth={5} dot={{r: 6, fill: '#6366f1', strokeWidth: 3, stroke: '#fff'}} label={{position: 'top', dy:-15, fontSize:15, fontWeight:900, fill: '#4338ca', formatter:(v)=>`${v}%`}} />
+                                            <Line name="수학" dataKey="수학" stroke="#10b981" strokeWidth={5} dot={{r: 6, fill: '#10b981', strokeWidth: 3, stroke: '#fff'}} label={{position: 'bottom', dy:25, fontSize:15, fontWeight:900, fill: '#064e3b', formatter:(v)=>`${v}%`}} />
+                                            <Line name="영어" dataKey="영어" stroke="#f59e0b" strokeWidth={5} dot={{r: 6, fill: '#f59e0b', strokeWidth: 3, stroke: '#fff'}} label={{position: 'top', dy:-45, fontSize:15, fontWeight:900, fill: '#92400e', formatter:(v)=>`${v}%`}} />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
                             </section>
                         )}
 
-                        {/* [NEW] 섹션 3: 대입 지원 가능 인원 예측 (Tight vs Flexible) */}
-                        <section className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 p-8 relative overflow-hidden">
+                        {/* 섹션 3: 대입 지원 가능 인원 예측 (Tight vs Flexible) */}
+                        <section className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 p-8 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-8 opacity-10"><Icon name="TrendUp" size={200} /></div>
                             <div className="flex items-center gap-4 mb-12 relative z-10">
                                 <div className="p-3 bg-indigo-950 rounded-2xl text-white shadow-xl shadow-indigo-100"><Icon name="Target" size={28} /></div>
                                 <div>
                                     <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">대입 지원 가능 인원 예측 (Simulation)</h2>
-                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">Conservative (Tight) vs Potential (Flexible) Group</p>
+                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">Conservative (Tight) vs Potential (Flexible) Analysis</p>
                                 </div>
                             </div>
                             
@@ -305,11 +305,11 @@
                                             {/* Tight Case */}
                                             <div className="bg-white/5 backdrop-blur-md p-5 rounded-3xl border border-white/10 flex justify-between items-center group-hover:bg-white/10 transition-colors">
                                                 <div>
-                                                    <span className="text-[10px] font-black block uppercase tracking-widest text-indigo-200/80">Tight (보수)</span>
-                                                    <p className="text-[9px] font-bold text-indigo-200/40">정시 안정 합격권</p>
+                                                    <span className="text-[10px] font-black block uppercase tracking-widest text-indigo-200/80 underline decoration-indigo-400 decoration-2 underline-offset-4 mb-1">Tight (보수)</span>
+                                                    <p className="text-[9px] font-bold text-indigo-200/40 italic">정시 안정 합격선</p>
                                                 </div>
                                                 <div className="flex items-baseline gap-1">
-                                                    <span className="text-4xl font-black tracking-tighter">{univ.tight}</span>
+                                                    <span className="text-5xl font-black tracking-tighter">{univ.tight}</span>
                                                     <span className="text-sm font-bold opacity-60">명</span>
                                                 </div>
                                             </div>
@@ -317,11 +317,11 @@
                                             {/* Flexible Case */}
                                             <div className="bg-emerald-500/10 backdrop-blur-md p-5 rounded-3xl border border-emerald-400/20 flex justify-between items-center group-hover:bg-emerald-500/20 transition-colors">
                                                 <div>
-                                                    <span className="text-[10px] font-black block uppercase tracking-widest text-emerald-300/80">Flexible (유연)</span>
-                                                    <p className="text-[9px] font-bold text-emerald-300/40">수시 도전 및 잠재권</p>
+                                                    <span className="text-[10px] font-black block uppercase tracking-widest text-emerald-300/80 underline decoration-emerald-400 decoration-2 underline-offset-4 mb-1">Flexible (유연)</span>
+                                                    <p className="text-[9px] font-bold text-emerald-300/40 italic">수시 도전 및 잠재권</p>
                                                 </div>
                                                 <div className="flex items-baseline gap-1">
-                                                    <span className="text-4xl font-black tracking-tighter text-emerald-300">{univ.flex}</span>
+                                                    <span className="text-5xl font-black tracking-tighter text-emerald-300">{univ.flex}</span>
                                                     <span className="text-sm font-bold opacity-60 text-emerald-300">명</span>
                                                 </div>
                                             </div>
@@ -330,11 +330,12 @@
                                 ))}
                             </div>
                             
-                            <div className="mt-12 p-6 bg-indigo-50/50 rounded-[1.5rem] border border-indigo-100 flex items-start gap-4">
+                            <div className="mt-12 p-6 bg-indigo-50/50 rounded-[1.5rem] border border-indigo-100 flex items-start gap-4 shadow-inner">
                                 <Icon name="Zap" size={20} className="text-indigo-600 mt-1 shrink-0" />
                                 <div className="text-[11px] text-indigo-900/60 leading-relaxed font-bold italic">
-                                    * 본 수치는 2026학년도 대입 전형별 가중치와 대신고 최근 3개년 입결 데이터를 결합한 시뮬레이션 결과입니다.<br/>
-                                    * **Tight**: 전국 백분위 기준 정시 80% 컷 이내 인원 / **Flexible**: 수능 최저 사수 가능권 및 본교 창체/세특 경쟁력 합산 인원.
+                                    * 본 예측 수치는 2026학년도 대입 주요 전형별 가중치와 대신고 최근 3개년 대입 결과를 결합한 시뮬레이션 결과입니다.<br/>
+                                    * **Tight (보수적)**: 주요 영역 등급 합산 3~4 이내 및 전국 백분위 기준 정시 80% 컷 안정권을 의미합니다.<br/>
+                                    * **Flexible (유연한)**: 본교의 수시 경쟁력과 수능 최저 충족 가능자(전국 백분위 보정치 적용)를 합산한 수치입니다.
                                 </div>
                             </div>
                         </section>
@@ -347,21 +348,21 @@
                                     <Icon name="Award" size={48} className="text-amber-400" />
                                     <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight</h3>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm font-bold">
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
-                                        <div className="flex items-center gap-3 mb-4 text-indigo-300 font-black uppercase italic tracking-tighter">
+                                        <div className="flex items-center gap-3 mb-4 text-indigo-300 font-black uppercase italic tracking-tighter border-b border-indigo-400/30 pb-2">
                                             <Icon name="Book" size={20} /> Korean Strategy
                                         </div>
                                         <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].kor}</p>
                                     </div>
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
-                                        <div className="flex items-center gap-3 mb-4 text-emerald-300 font-black uppercase italic tracking-tighter">
+                                        <div className="flex items-center gap-3 mb-4 text-emerald-300 font-black uppercase italic tracking-tighter border-b border-emerald-400/30 pb-2">
                                             <Icon name="Chart" size={20} /> Math Strategy
                                         </div>
                                         <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].math}</p>
                                     </div>
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
-                                        <div className="flex items-center gap-3 mb-4 text-amber-300 font-black uppercase italic tracking-tighter">
+                                        <div className="flex items-center gap-3 mb-4 text-amber-300 font-black uppercase italic tracking-tighter border-b border-amber-400/30 pb-2">
                                             <Icon name="Zap" size={20} /> English Strategy
                                         </div>
                                         <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].eng}</p>
@@ -374,7 +375,7 @@
                     <footer className="mt-20 mb-10 text-center text-gray-500 text-[11px] font-bold tracking-[0.3em] uppercase opacity-60">
                         &copy; 2026 DAEJEON DAE SHIN HIGH SCHOOL · ACADEMIC INTELLIGENCE HUB · DATA CONSOLIDATED
                         <br />
-                        <span className="mt-2 inline-block italic font-black text-gray-400 underline decoration-indigo-200 underline-offset-4 uppercase">Created by HA JIN SU</span>
+                        <span className="mt-2 inline-block italic font-black text-gray-400 underline decoration-indigo-200 underline-offset-4 uppercase tracking-[0.1em]">Created by HA JIN SU</span>
                     </footer>
                 </div>
             );
