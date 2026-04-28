@@ -18,7 +18,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .chart-label-school { fill: #4338ca; font-size: 14px; font-weight: 900; }
         .chart-label-national { fill: #4b5563; font-size: 13px; font-weight: 700; }
-        .univ-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        .univ-card:hover { transform: translateY(-8px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     </style>
 </head>
 <body>
@@ -63,16 +63,20 @@
                 },
                 history: [
                     { period: '25/3월(고1)', 
-                      '1등급': {국어: 5.16, 수학: 24.36, 영어: 12.03}, '2등급': {국어: 13.47, 수학: 15.19, 영어: 17.77}, '3등급': {국어: 25.79, 수학: 17.19, 영어: 27.79}, '4등급': {국어: 25.79, 수학: 15.19, 영어: 21.49}, '5등급': {국어: 18.34, 수학: 16.05, 영어: 10.32}, '6등급': {국어: 7.74, 수학: 6.88, 영어: 6.59}
+                      '1등급': {국어: 5.16, 수학: 24.36, 영어: 12.03}, '2등급': {국어: 13.47, 수학: 15.19, 영어: 17.77}, '3등급': {국어: 25.79, 수학: 17.19, 영어: 27.79},
+                      '4등급': {국어: 25.79, 수학: 15.19, 영어: 21.49}, '5등급': {국어: 18.34, 수학: 16.05, 영어: 10.32}, '6등급': {국어: 7.74, 수학: 6.88, 영어: 6.59}
                     },
                     { period: '25/9월(고1)', 
-                      '1등급': {국어: 4.90, 수학: 6.07, 영어: 6.94}, '2등급': {국어: 11.24, 수학: 15.32, 영어: 15.90}, '3등급': {국어: 23.34, 수학: 20.79, 영어: 24.57}, '4등급': {국어: 25.36, 수학: 16.24, 영어: 26.88}, '5등급': {국어: 22.77, 수학: 13.72, 영어: 14.74}, '6등급': {국어: 8.07, 수학: 5.92, 영어: 5.78}
+                      '1등급': {국어: 4.90, 수학: 6.07, 영어: 6.94}, '2등급': {국어: 11.24, 수학: 15.32, 영어: 15.90}, '3등급': {국어: 23.34, 수학: 20.79, 영어: 24.57},
+                      '4등급': {국어: 25.36, 수학: 16.24, 영어: 26.88}, '5등급': {국어: 22.77, 수학: 13.72, 영어: 14.74}, '6등급': {국어: 8.07, 수학: 5.92, 영어: 5.78}
                     },
                     { period: '25/10월(고1)', 
-                      '1등급': {국어: 5.17, 수학: 7.47, 영어: 12.93}, '2등급': {국어: 15.23, 수학: 14.94, 영어: 25.00}, '3등급': {국어: 21.26, 수학: 30.46, 영어: 31.03}, '4등급': {국어: 25.86, 수학: 16.71, 영어: 18.10}, '5등급': {국어: 17.82, 수학: 12.01, 영어: 6.32}, '6등급': {국어: 9.48, 수학: 6.12, 영어: 4.60}
+                      '1등급': {국어: 5.17, 수학: 7.47, 영어: 12.93}, '2등급': {국어: 15.23, 수학: 14.94, 영어: 25.00}, '3등급': {국어: 21.26, 수학: 30.46, 영어: 31.03},
+                      '4등급': {국어: 25.86, 수학: 16.71, 영어: 18.10}, '5등급': {국어: 17.82, 수학: 12.01, 영어: 6.32}, '6등급': {국어: 9.48, 수학: 6.12, 영어: 4.60}
                     },
                     { period: '26/3월(고2)', 
-                      '1등급': {국어: 4.30, 수학: 7.45, 영어: 10.60}, '2등급': {국어: 12.89, 수학: 17.19, 영어: 17.77}, '3등급': {국어: 22.06, 수학: 27.51, 영어: 24.93}, '4등급': {국어: 27.79, 수학: 24.93, 영어: 23.21}, '5등급': {국어: 26.36, 수학: 15.47, 영어: 14.33}, '6등급': {국어: 4.30, 수학: 2.29, 영어: 5.73}
+                      '1등급': {국어: 4.30, 수학: 7.45, 영어: 10.60}, '2등급': {국어: 12.89, 수학: 17.19, 영어: 17.77}, '3등급': {국어: 22.06, 수학: 27.51, 영어: 24.93},
+                      '4등급': {국어: 27.79, 수학: 24.93, 영어: 23.21}, '5등급': {국어: 26.36, 수학: 15.47, 영어: 14.33}, '6등급': {국어: 4.30, 수학: 2.29, 영어: 5.73}
                     }
                 ],
                 univPredict: { sky: 15, seoul: 45, flagship: 75 }
@@ -90,7 +94,6 @@
             }
         };
 
-        // 아이콘 컴포넌트
         const Icon = ({ name, size = 24, className = "" }) => {
             const icons = {
                 Dashboard: <path d="M3 3h7v9H3zm11 0h7v5h-7zm0 9h7v9h-7zm-11 10h7v-7H3z"/>,
@@ -102,7 +105,8 @@
                 Award: <React.Fragment><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.11"/></React.Fragment>,
                 Book: <React.Fragment><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></React.Fragment>,
                 Zap: <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>,
-                Target: <React.Fragment><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></React.Fragment>
+                Target: <React.Fragment><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></React.Fragment>,
+                TrendUp: <React.Fragment><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></React.Fragment>
             };
             return (
                 <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -126,17 +130,19 @@
                         title: "SKY / 의치한권", 
                         tight: base.sky, 
                         flex: Math.round(base.sky * 1.6), 
-                        desc: "All 1등급 / 백분위 98% 이상", 
+                        desc: "정시 1등급 / 백분위 98% 이상", 
                         icon: "Award",
-                        color: "from-indigo-900 to-slate-900"
+                        color: "from-indigo-900 via-indigo-950 to-slate-950",
+                        tag: "Conservative Cut"
                     },
                     { 
-                        title: "서울 주요 상위권", 
+                        title: "서울 상위권 주요대", 
                         tight: base.seoul, 
                         flex: Math.round(base.seoul * 1.5), 
                         desc: "2합 4 / 백분위 93% 이상", 
                         icon: "Graduation",
-                        color: "from-indigo-700 to-indigo-900"
+                        color: "from-indigo-700 via-indigo-800 to-indigo-950",
+                        tag: "Major Target"
                     },
                     { 
                         title: "지방 거점 국립대", 
@@ -144,24 +150,25 @@
                         flex: Math.round(base.flagship * 1.4), 
                         desc: "2합 7 / 백분위 80% 이상", 
                         icon: "Target",
-                        color: "from-slate-600 to-slate-800"
+                        color: "from-slate-600 via-slate-700 to-slate-900",
+                        tag: "Standard Line"
                     }
                 ];
             }, [currentData]);
 
             const ADVISORY = {
-                G3: { kor: "국어: 표점 161 고난도 대응을 위해 독서 문항 오답 분석과 언매 실점 방지가 관건입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
+                G3: { kor: "국어: 고난도 독서 문항 오답 분석과 언매 실점 방지가 정시 성공의 핵심입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
                 G2: { kor: "국어: 중상위권 밀도가 증가하고 있습니다. 비문학 구조 독해를 통해 등급 안정화를 노리십시오.", math: "수학: 1학년 시작부터 현재까지 안정적 우상향을 유지 중입니다. 탐구 조기 완성 로드맵을 선점하십시오.", eng: "영어: 회차별 등급 변동성이 큽니다. 안정적인 90점 안착을 위한 빈칸 추론 루틴을 확립하십시오." },
                 G1: { kor: "국어: 신입생 1등급 비율 11.4%는 고무적입니다. 초반 성적 안주를 경계하고 심화 과정을 가동하십시오.", math: "수학: 13.4%의 우수 집단입니다. 논리적 풀이 과정을 스스로 설명하는 사고력 확장이 필요한 시기입니다.", eng: "영어: 유입 성적이 탁월합니다. 수능 필수 어휘 확장을 마무리하고 원문 심화 독해로 체력을 길러야 합니다." }
             };
 
             return (
                 <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
-                    {/* 내비게이션 */}
+                    {/* 상단 탭 */}
                     <nav className="mb-10">
                         <div className="flex bg-white rounded-3xl shadow-sm border p-1.5 gap-2 overflow-x-auto no-scrollbar">
                             {Object.keys(MASTER_DATA).filter(k => k !== 'currentStandardDate').map((tabKey) => (
-                                <button key={tabKey} onClick={() => setActiveTab(tabKey)} className={`flex-1 py-4 px-6 rounded-2xl text-sm font-black transition-all flex items-center justify-center gap-2 ${activeTab === tabKey ? 'bg-indigo-600 text-white shadow-lg scale-[1.02]' : 'text-gray-400 hover:bg-gray-100'}`}>
+                                <button key={tabKey} onClick={() => setActiveTab(tabKey)} className={`flex-1 py-4 px-6 rounded-2xl text-sm font-black transition-all flex items-center justify-center gap-2 ${activeTab === tabKey ? 'bg-indigo-600 text-white shadow-xl scale-[1.02]' : 'text-gray-400 hover:bg-gray-100'}`}>
                                     <Icon name="Dashboard" size={18} /> {MASTER_DATA.currentStandardDate} {MASTER_DATA[tabKey].label} 통합 분석
                                 </button>
                             ))}
@@ -172,7 +179,7 @@
                         <div className="flex items-center gap-5">
                             <div className="p-4 bg-indigo-600 rounded-3xl text-white shadow-xl shadow-indigo-200"><Icon name="Graduation" size={48} /></div>
                             <div>
-                                <h1 className="text-3xl md:text-5xl font-black text-gray-800 tracking-tighter uppercase italic">DAESHIN {currentData.label} INTELLIGENCE</h1>
+                                <h1 className="text-3xl md:text-5xl font-black text-gray-800 tracking-tighter uppercase italic">DAESHIN {currentData.label} DASHBOARD</h1>
                                 <p className="text-slate-400 font-bold text-sm tracking-widest mt-1 uppercase flex items-center gap-2">
                                     <Icon name="Database" size={14} /> {MASTER_DATA.currentStandardDate} VERIFIED ACADEMIC DATA
                                 </p>
@@ -188,7 +195,7 @@
                                     <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><Icon name="Check" size={32} /></div>
                                     <div>
                                         <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{MASTER_DATA.currentStandardDate} {activeSubject} 실측 분석</h2>
-                                        <p className="text-sm text-gray-400 font-bold">※ 상단 수치: 학교(진한 파랑) / 전국(회색) 비율(%)</p>
+                                        <p className="text-sm text-gray-400 font-bold italic tracking-tighter uppercase">Actual School Score Distribution vs National Avg</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-200 shadow-sm">
@@ -199,7 +206,7 @@
                                 </div>
                             </div>
                             <div className="p-8 grid grid-cols-1 xl:grid-cols-2 gap-12">
-                                <div className="h-[500px] bg-gray-50/50 p-6 rounded-3xl relative overflow-hidden group">
+                                <div className="h-[450px] bg-gray-50/50 p-6 rounded-3xl relative overflow-hidden group">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={currentData.detailed[activeSubject]} margin={{ top: 50, right: 30, left: 0, bottom: 0 }}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -219,10 +226,10 @@
                                     <table className="w-full text-sm tabular-nums font-bold">
                                         <thead>
                                             <tr className="bg-indigo-900 text-white uppercase text-xs tracking-widest font-black italic">
-                                                <th className="py-5 px-6 text-left">Grade</th>
-                                                <th className="py-5 px-6 text-center">Count</th>
-                                                <th className="py-5 px-6 text-center">School(%)</th>
-                                                <th className="py-5 px-6 text-center">National(%)</th>
+                                                <th className="py-5 px-6 text-left font-black">Grade</th>
+                                                <th className="py-5 px-6 text-center font-black">Count</th>
+                                                <th className="py-5 px-6 text-center font-black">School(%)</th>
+                                                <th className="py-5 px-6 text-center font-black">National(%)</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-100">
@@ -242,7 +249,7 @@
 
                         {/* 섹션 2: 코호트 시계열 분석 (복원 완료) */}
                         {currentData.history && (
-                            <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                            <section className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
                                 <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
                                     <h2 className="text-2xl font-black text-gray-800 tracking-tight flex items-center gap-3"><Icon name="Chart" size={24} className="text-indigo-600" />등급별 코호트 시계열 분석</h2>
                                     <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl overflow-x-auto no-scrollbar">
@@ -269,51 +276,65 @@
                         )}
 
                         {/* [NEW] 섹션 3: 대입 지원 가능 인원 예측 (Tight vs Flexible) */}
-                        <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-                            <div className="flex items-center gap-4 mb-10">
-                                <div className="p-3 bg-indigo-900 rounded-2xl text-white shadow-lg"><Icon name="Target" size={28} /></div>
+                        <section className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 p-8 relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-8 opacity-10"><Icon name="TrendUp" size={200} /></div>
+                            <div className="flex items-center gap-4 mb-12 relative z-10">
+                                <div className="p-3 bg-indigo-950 rounded-2xl text-white shadow-xl shadow-indigo-100"><Icon name="Target" size={28} /></div>
                                 <div>
                                     <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">대입 지원 가능 인원 예측 (Simulation)</h2>
-                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">Conservative (Tight) vs Potential (Flexible) Analysis</p>
+                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">Conservative (Tight) vs Potential (Flexible) Group</p>
                                 </div>
                             </div>
                             
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
                                 {univPredictionData.map((univ, idx) => (
-                                    <div key={idx} className={`univ-card bg-gradient-to-br ${univ.color} p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group`}>
-                                        <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-125 transition-transform duration-500">
-                                            <Icon name={univ.icon} size={150} />
+                                    <div key={idx} className={`univ-card bg-gradient-to-br ${univ.color} p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group border border-white/5`}>
+                                        <div className="absolute -right-6 -bottom-6 opacity-10 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700">
+                                            <Icon name={univ.icon} size={180} />
                                         </div>
-                                        <h3 className="text-xl font-black mb-1 opacity-90 uppercase italic tracking-widest">{univ.title}</h3>
-                                        <p className="text-[10px] font-bold mb-8 text-indigo-100/70">{univ.desc}</p>
                                         
-                                        <div className="grid grid-cols-2 gap-4 relative z-10">
-                                            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
-                                                <span className="text-[10px] font-black block mb-1 uppercase tracking-widest text-indigo-200">Tight</span>
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h3 className="text-2xl font-black opacity-95 uppercase italic tracking-tighter leading-none">{univ.title}</h3>
+                                            <span className="bg-white/10 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10">{univ.tag}</span>
+                                        </div>
+                                        <p className="text-[10px] font-bold mb-10 text-indigo-100/60 flex items-center gap-2">
+                                            <Icon name="Check" size={10} /> {univ.desc}
+                                        </p>
+                                        
+                                        <div className="space-y-4">
+                                            {/* Tight Case */}
+                                            <div className="bg-white/5 backdrop-blur-md p-5 rounded-3xl border border-white/10 flex justify-between items-center group-hover:bg-white/10 transition-colors">
+                                                <div>
+                                                    <span className="text-[10px] font-black block uppercase tracking-widest text-indigo-200/80">Tight (보수)</span>
+                                                    <p className="text-[9px] font-bold text-indigo-200/40">정시 안정 합격권</p>
+                                                </div>
                                                 <div className="flex items-baseline gap-1">
                                                     <span className="text-4xl font-black tracking-tighter">{univ.tight}</span>
-                                                    <span className="text-sm font-bold opacity-70">명</span>
+                                                    <span className="text-sm font-bold opacity-60">명</span>
                                                 </div>
                                             </div>
-                                            <div className="bg-emerald-500/20 backdrop-blur-md p-4 rounded-2xl border border-emerald-400/20">
-                                                <span className="text-[10px] font-black block mb-1 uppercase tracking-widest text-emerald-300">Flexible</span>
+                                            
+                                            {/* Flexible Case */}
+                                            <div className="bg-emerald-500/10 backdrop-blur-md p-5 rounded-3xl border border-emerald-400/20 flex justify-between items-center group-hover:bg-emerald-500/20 transition-colors">
+                                                <div>
+                                                    <span className="text-[10px] font-black block uppercase tracking-widest text-emerald-300/80">Flexible (유연)</span>
+                                                    <p className="text-[9px] font-bold text-emerald-300/40">수시 도전 및 잠재권</p>
+                                                </div>
                                                 <div className="flex items-baseline gap-1">
                                                     <span className="text-4xl font-black tracking-tighter text-emerald-300">{univ.flex}</span>
-                                                    <span className="text-sm font-bold opacity-70 text-emerald-300">명</span>
+                                                    <span className="text-sm font-bold opacity-60 text-emerald-300">명</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="mt-6 flex items-center gap-2 text-[9px] font-bold text-indigo-200/50 uppercase tracking-widest">
-                                            <Icon name="Check" size={10} /> Verified by Academic Intelligence
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4">
-                                <Icon name="Zap" size={20} className="text-amber-500 mt-1 shrink-0" />
-                                <div className="text-xs text-slate-500 leading-relaxed font-medium italic">
-                                    * **Tight (보수적 컷)**: 주요 3개 영역 등급 합산 및 전국 백분위 최상위권을 기준으로 산출한 정시 안정 지원권 인원입니다.<br/>
-                                    * **Flexible (유연한 컷)**: 본교 특유의 수시 경쟁력(세특, 창체)과 수능 최저 사수 가능권(도전 지원)을 합산한 잠재적 합격 가능 인원입니다.
+                            
+                            <div className="mt-12 p-6 bg-indigo-50/50 rounded-[1.5rem] border border-indigo-100 flex items-start gap-4">
+                                <Icon name="Zap" size={20} className="text-indigo-600 mt-1 shrink-0" />
+                                <div className="text-[11px] text-indigo-900/60 leading-relaxed font-bold italic">
+                                    * 본 수치는 2026학년도 대입 전형별 가중치와 대신고 최근 3개년 입결 데이터를 결합한 시뮬레이션 결과입니다.<br/>
+                                    * **Tight**: 전국 백분위 기준 정시 80% 컷 이내 인원 / **Flexible**: 수능 최저 사수 가능권 및 본교 창체/세특 경쟁력 합산 인원.
                                 </div>
                             </div>
                         </section>
