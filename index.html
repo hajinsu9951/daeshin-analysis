@@ -88,7 +88,8 @@
                       '4등급': {국어: 25.94, 수학: 30.46, 영어: 19.88}, '5등급': {국어: 19.60, 수학: 17.53, 영어: 11.24}, '6등급': {국어: 10.37, 수학: 6.90, 영어: 6.34}
                     }
                 ],
-                univPredict: { sky: 15, seoul: 45, flagship: 75 }
+                univPredict: { sky: 15, seoul: 45, flagship: 75 },
+                univPredictJune: { sky: 17, seoul: 44, flagship: 72 }
             },
 
             G1: {
@@ -113,7 +114,8 @@
                       '4등급': {국어: 25.21, 수학: 18.05, 영어: 12.89}, '5등급': {국어: 13.47, 수학: 8.31, 영어: 8.02}, '6등급': {국어: 4.58, 수학: 4.87, 영어: 4.01}
                     }
                 ],
-                univPredict: { sky: 25, seoul: 65, flagship: 110 }
+                univPredict: { sky: 25, seoul: 65, flagship: 110 },
+                univPredictJune: { sky: 26, seoul: 63, flagship: 116 }
             }
         };
 
@@ -154,7 +156,7 @@
 
             // 대학 예측 지표 생성 (타이트 vs 유연)
             const univPredictionData = useMemo(() => {
-                const base = currentData.univPredict;
+                const base = (showJune && currentData.univPredictJune) ? currentData.univPredictJune : currentData.univPredict;
                 return [
                     { 
                         title: "SKY / 의치한권", 
@@ -184,13 +186,20 @@
                         tag: "Standard Line"
                     }
                 ];
-            }, [currentData]);
+            }, [currentData, showJune]);
 
             const ADVISORY = {
                 G3: { kor: "국어: 표점 161 고난도 대응을 위해 독서 문항 오답 분석과 언매 실점 방지가 관건입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
                 G2: { kor: "국어: 중상위권 밀도가 증가하고 있습니다. 비문학 구조 독해를 통해 등급 안정화를 노리십시오.", math: "수학: 1학년 시작부터 현재까지 안정적 우상향을 유지 중입니다. 탐구 조기 완성 로드맵을 선점하십시오.", eng: "영어: 회차별 등급 변동성이 큽니다. 안정적인 90점 안착을 위한 빈칸 추론 루틴을 확립하십시오." },
                 G1: { kor: "국어: 신입생 1등급 비율 11.4%는 고무적입니다. 초반 성적 안주를 경계하고 심화 과정을 가동하십시오.", math: "수학: 13.4%의 우수 집단입니다. 논리적 풀이 과정을 스스로 설명하는 사고력 확장이 필요한 시기입니다.", eng: "영어: 유입 성적이 탁월합니다. 수능 필수 어휘 확장을 마무리하고 원문 심화 독해로 체력을 길러야 합니다." }
             };
+
+            // 6월 모의고사 등급분포 기반 전략 (고1·고2). 3월/6월 토글에 연동.
+            const ADVISORY_JUNE = {
+                G2: { kor: "국어: 1등급이 4.3%→5.2%로 소폭 올랐으나 4등급(25.9%, 90명)에 밀집이 큽니다. 비문학 구조 독해로 3등급 벽을 넘기는 데 집중하십시오.", math: "수학: 4등급에 30.5%(106명)가 몰리며 3등급 이내 비중이 얇아졌습니다. 준킬러(3점 후반~4점 초반) 집중 훈련으로 3등급 돌파율을 높여야 합니다.", eng: "영어: 1등급 10.4%·2등급 19.0%로 상위 안정세입니다. 절대평가 강점을 살려 빈칸 추론 루틴으로 90점 안착을 유지하십시오." },
+                G1: { kor: "국어: 1등급이 11.5%→9.2%(40→32명)로 조정됐습니다. 상위권 일부가 빠진 만큼 비문학 독해 정확도를 끌어올려 1·2등급대를 재안정화해야 합니다.", math: "수학: 1등급이 13.5%→15.8%(47→55명)로 상승해 최상위층이 더 두터워졌습니다. 고난도 4점 문항의 논리 전개를 스스로 설명하며 표점 우위를 굳히십시오.", eng: "영어: 1등급 16.1%(56명)로 유입 성적이 더 강해졌습니다. 절대평가 90점 고정을 위해 빈칸·순서 고난도 유형 루틴을 확립하십시오." }
+            };
+            const advisory = (showJune && ADVISORY_JUNE[activeTab]) ? ADVISORY_JUNE[activeTab] : ADVISORY[activeTab];
 
             return (
                 <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
@@ -320,8 +329,8 @@
                             <div className="flex items-center gap-4 mb-12 relative z-10">
                                 <div className="p-3 bg-indigo-950 rounded-2xl text-white shadow-xl shadow-indigo-100"><Icon name="Target" size={28} /></div>
                                 <div>
-                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">대입 지원 가능 인원 예측 (Simulation)</h2>
-                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">Conservative (Tight) vs Potential (Flexible) Analysis</p>
+                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{periodLabel} 대입 지원 가능 인원 예측 (Simulation)</h2>
+                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">{hasJune ? `${periodLabel} 모의고사 기준 · ` : ''}Conservative (Tight) vs Potential (Flexible) Analysis</p>
                                 </div>
                             </div>
                             
@@ -385,26 +394,26 @@
                             <div className="relative z-10">
                                 <div className="flex items-center gap-5 mb-10">
                                     <Icon name="Award" size={48} className="text-amber-400" />
-                                    <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight</h3>
+                                    <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight · {periodLabel}</h3>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm font-bold">
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
                                         <div className="flex items-center gap-3 mb-4 text-indigo-300 font-black uppercase italic tracking-tighter border-b border-indigo-400/30 pb-2">
                                             <Icon name="Book" size={20} /> Korean Strategy
                                         </div>
-                                        <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].kor}</p>
+                                        <p className="leading-relaxed font-medium opacity-90">{advisory.kor}</p>
                                     </div>
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
                                         <div className="flex items-center gap-3 mb-4 text-emerald-300 font-black uppercase italic tracking-tighter border-b border-emerald-400/30 pb-2">
                                             <Icon name="Chart" size={20} /> Math Strategy
                                         </div>
-                                        <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].math}</p>
+                                        <p className="leading-relaxed font-medium opacity-90">{advisory.math}</p>
                                     </div>
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
                                         <div className="flex items-center gap-3 mb-4 text-amber-300 font-black uppercase italic tracking-tighter border-b border-amber-400/30 pb-2">
                                             <Icon name="Zap" size={20} /> English Strategy
                                         </div>
-                                        <p className="leading-relaxed font-medium opacity-90">{ADVISORY[activeTab].eng}</p>
+                                        <p className="leading-relaxed font-medium opacity-90">{advisory.eng}</p>
                                     </div>
                                 </div>
                             </div>
