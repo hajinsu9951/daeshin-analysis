@@ -145,6 +145,8 @@
             const [activeSubject, setActiveSubject] = useState('수학');
             const [activeTrendGrade, setActiveTrendGrade] = useState('1등급');
             const [activePeriod, setActivePeriod] = useState('6월');
+            // 대입 예측·전략은 3월을 기본으로 살려두고, 클릭 시 6월도 확인 (실측 상세와 독립 토글)
+            const [predPeriod, setPredPeriod] = useState('3월');
 
             const currentData = MASTER_DATA[activeTab];
 
@@ -154,9 +156,13 @@
             const activeDetailed = showJune ? currentData.detailedJune : currentData.detailed;
             const periodLabel = showJune ? '2026 6월' : '2026 3월';
 
+            // 대입 예측/전략 인사이트 전용 기간 (3월 기본, 6월 토글)
+            const predShowJune = hasJune && predPeriod === '6월';
+            const predLabel = predShowJune ? '2026 6월' : '2026 3월';
+
             // 대학 예측 지표 생성 (타이트 vs 유연)
             const univPredictionData = useMemo(() => {
-                const base = (showJune && currentData.univPredictJune) ? currentData.univPredictJune : currentData.univPredict;
+                const base = (predShowJune && currentData.univPredictJune) ? currentData.univPredictJune : currentData.univPredict;
                 return [
                     { 
                         title: "SKY / 의치한권", 
@@ -186,7 +192,7 @@
                         tag: "Standard Line"
                     }
                 ];
-            }, [currentData, showJune]);
+            }, [currentData, predShowJune]);
 
             const ADVISORY = {
                 G3: { kor: "국어: 표점 161 고난도 대응을 위해 독서 문항 오답 분석과 언매 실점 방지가 관건입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
@@ -199,7 +205,7 @@
                 G2: { kor: "국어: 1등급이 4.3%→5.2%로 소폭 올랐으나 4등급(25.9%, 90명)에 밀집이 큽니다. 비문학 구조 독해로 3등급 벽을 넘기는 데 집중하십시오.", math: "수학: 4등급에 30.5%(106명)가 몰리며 3등급 이내 비중이 얇아졌습니다. 준킬러(3점 후반~4점 초반) 집중 훈련으로 3등급 돌파율을 높여야 합니다.", eng: "영어: 1등급 10.4%·2등급 19.0%로 상위 안정세입니다. 절대평가 강점을 살려 빈칸 추론 루틴으로 90점 안착을 유지하십시오." },
                 G1: { kor: "국어: 1등급이 11.5%→9.2%(40→32명)로 조정됐습니다. 상위권 일부가 빠진 만큼 비문학 독해 정확도를 끌어올려 1·2등급대를 재안정화해야 합니다.", math: "수학: 1등급이 13.5%→15.8%(47→55명)로 상승해 최상위층이 더 두터워졌습니다. 고난도 4점 문항의 논리 전개를 스스로 설명하며 표점 우위를 굳히십시오.", eng: "영어: 1등급 16.1%(56명)로 유입 성적이 더 강해졌습니다. 절대평가 90점 고정을 위해 빈칸·순서 고난도 유형 루틴을 확립하십시오." }
             };
-            const advisory = (showJune && ADVISORY_JUNE[activeTab]) ? ADVISORY_JUNE[activeTab] : ADVISORY[activeTab];
+            const advisory = (predShowJune && ADVISORY_JUNE[activeTab]) ? ADVISORY_JUNE[activeTab] : ADVISORY[activeTab];
 
             return (
                 <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
@@ -326,12 +332,21 @@
                         {/* 섹션 3: 대입 지원 가능 인원 예측 (Tight vs Flexible) */}
                         <section className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 p-8 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-8 opacity-10"><Icon name="TrendUp" size={200} /></div>
-                            <div className="flex items-center gap-4 mb-12 relative z-10">
-                                <div className="p-3 bg-indigo-950 rounded-2xl text-white shadow-xl shadow-indigo-100"><Icon name="Target" size={28} /></div>
-                                <div>
-                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{periodLabel} 대입 지원 가능 인원 예측 (Simulation)</h2>
-                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">{hasJune ? `${periodLabel} 모의고사 기준 · ` : ''}Conservative (Tight) vs Potential (Flexible) Analysis</p>
+                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12 relative z-10">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-indigo-950 rounded-2xl text-white shadow-xl shadow-indigo-100"><Icon name="Target" size={28} /></div>
+                                    <div>
+                                        <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{predLabel} 대입 지원 가능 인원 예측 (Simulation)</h2>
+                                        <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">{hasJune ? `${predLabel} 모의고사 기준 · ` : ''}Conservative (Tight) vs Potential (Flexible) Analysis</p>
+                                    </div>
                                 </div>
+                                {hasJune && (
+                                    <div className="flex items-center gap-1 bg-indigo-50 p-1.5 rounded-2xl border border-indigo-100 shadow-sm shrink-0">
+                                        {['3월', '6월'].map(p => (
+                                            <button key={p} onClick={() => setPredPeriod(p)} className={`px-5 py-3 rounded-xl text-sm font-black transition-all ${predPeriod === p ? 'bg-indigo-600 text-white shadow-md scale-105' : 'text-indigo-400 hover:text-indigo-600'}`}>2026 {p}</button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                             
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
@@ -392,9 +407,18 @@
                         <section className="bg-indigo-950 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden text-white">
                             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none"><Icon name="Target" size={400} /></div>
                             <div className="relative z-10">
-                                <div className="flex items-center gap-5 mb-10">
-                                    <Icon name="Award" size={48} className="text-amber-400" />
-                                    <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight · {periodLabel}</h3>
+                                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
+                                    <div className="flex items-center gap-5">
+                                        <Icon name="Award" size={48} className="text-amber-400" />
+                                        <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight · {predLabel}</h3>
+                                    </div>
+                                    {hasJune && (
+                                        <div className="flex items-center gap-1 bg-white/10 p-1.5 rounded-2xl border border-white/15 shrink-0">
+                                            {['3월', '6월'].map(p => (
+                                                <button key={p} onClick={() => setPredPeriod(p)} className={`px-5 py-2.5 rounded-xl text-sm font-black transition-all ${predPeriod === p ? 'bg-amber-400 text-indigo-950 shadow-md scale-105' : 'text-amber-200/70 hover:text-white'}`}>2026 {p}</button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm font-bold">
                                     <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
