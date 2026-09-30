@@ -179,8 +179,8 @@
             const [activeSubject, setActiveSubject] = useState('수학');
             const [activeTrendGrade, setActiveTrendGrade] = useState('1등급');
             const [activePeriod, setActivePeriod] = useState('9월');
-            // 대입 예측·전략은 3월을 기본으로 살려두고, 클릭 시 6월·9월도 확인 (실측 상세와 독립 토글)
-            const [predPeriod, setPredPeriod] = useState('3월');
+            // 대입 예측·전략은 최신 회차가 먼저 보이도록 역순(9월→6월→3월) 배치, 기본값은 최신(9월)
+            const [predPeriod, setPredPeriod] = useState('9월');
 
             const currentData = MASTER_DATA[activeTab];
 
@@ -188,7 +188,7 @@
             const detailByPeriod = { '3월': currentData.detailed, '6월': currentData.detailedJune, '9월': currentData.detailedSep };
             const predByPeriod = { '3월': currentData.univPredict, '6월': currentData.univPredictJune, '9월': currentData.univPredictSep };
             const availPeriods = ['3월', '6월', '9월'].filter(p => detailByPeriod[p]);
-            const availPredPeriods = ['3월', '6월', '9월'].filter(p => predByPeriod[p]);
+            const availPredPeriods = ['9월', '6월', '3월'].filter(p => predByPeriod[p]); // 최신순 (도표는 3→6→9월 시간순 유지)
 
             // 실측 상세: 선택 회차(없으면 가장 최신 회차)
             const effPeriod = detailByPeriod[activePeriod] ? activePeriod : availPeriods[availPeriods.length - 1];
@@ -196,7 +196,7 @@
             const periodLabel = '2026 ' + effPeriod;
 
             // 대입 예측/전략 인사이트 전용 회차 (3월 기본, 없으면 최신)
-            const effPredPeriod = predByPeriod[predPeriod] ? predPeriod : availPredPeriods[availPredPeriods.length - 1];
+            const effPredPeriod = predByPeriod[predPeriod] ? predPeriod : availPredPeriods[0];
             const predLabel = '2026 ' + effPredPeriod;
 
             // 실측 상세: 3·6·9월 회차 비교용 데이터 (선택 과목의 등급별 학교%·인원, 전국 참고)
