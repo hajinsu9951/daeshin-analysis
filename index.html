@@ -36,7 +36,7 @@
          * 모든 데이터는 업로드된 PDF 실측 자료와 100% 대조 완료되었습니다.
          */
         const MASTER_DATA = {
-            currentStandardDate: "2026 6월",
+            currentStandardDate: "2026 9월",
             
             G3: {
                 label: "52기 (고3)",
@@ -45,13 +45,27 @@
                     수학: [{ grade: '1', school: 17, schoolPct: 5.21, nationalPct: 4.11 }, { grade: '2', school: 46, schoolPct: 14.11, nationalPct: 8.79 }, { grade: '3', school: 59, schoolPct: 18.10, nationalPct: 10.56 }, { grade: '4', school: 81, schoolPct: 24.85, nationalPct: 17.03 }, { grade: '5', school: 78, schoolPct: 23.93, nationalPct: 20.78 }, { grade: '6', school: 31, schoolPct: 9.48, nationalPct: 19.77 }],
                     영어: [{ grade: '1', school: 15, schoolPct: 4.60, nationalPct: 4.08 }, { grade: '2', school: 28, schoolPct: 8.59, nationalPct: 9.46 }, { grade: '3', school: 90, schoolPct: 27.61, nationalPct: 17.77 }, { grade: '4', school: 107, schoolPct: 32.82, nationalPct: 20.54 }, { grade: '5', school: 49, schoolPct: 15.03, nationalPct: 15.55 }, { grade: '6', school: 19, schoolPct: 5.83, nationalPct: 13.06 }]
                 },
+                detailedJune: {
+                    국어: [{ grade: '1', school: 7, schoolPct: 2.19, nationalPct: 4.00 }, { grade: '2', school: 14, schoolPct: 4.38, nationalPct: 7.00 }, { grade: '3', school: 33, schoolPct: 10.31, nationalPct: 12.00 }, { grade: '4', school: 65, schoolPct: 20.31, nationalPct: 17.00 }, { grade: '5', school: 87, schoolPct: 27.19, nationalPct: 20.00 }, { grade: '6', school: 70, schoolPct: 21.88, nationalPct: 17.00 }],
+                    수학: [{ grade: '1', school: 9, schoolPct: 2.81, nationalPct: 4.00 }, { grade: '2', school: 41, schoolPct: 12.81, nationalPct: 7.00 }, { grade: '3', school: 49, schoolPct: 15.31, nationalPct: 12.00 }, { grade: '4', school: 54, schoolPct: 16.88, nationalPct: 17.00 }, { grade: '5', school: 85, schoolPct: 26.56, nationalPct: 20.00 }, { grade: '6', school: 63, schoolPct: 19.69, nationalPct: 17.00 }],
+                    영어: [{ grade: '1', school: 16, schoolPct: 5.00, nationalPct: 4.08 }, { grade: '2', school: 52, schoolPct: 16.25, nationalPct: 9.46 }, { grade: '3', school: 105, schoolPct: 32.81, nationalPct: 17.77 }, { grade: '4', school: 81, schoolPct: 25.31, nationalPct: 20.54 }, { grade: '5', school: 35, schoolPct: 10.94, nationalPct: 15.55 }, { grade: '6', school: 21, schoolPct: 6.56, nationalPct: 13.06 }]
+                },
+                detailedSep: {
+                    국어: [{ grade: '1', school: 6, schoolPct: 1.91, nationalPct: 4.00 }, { grade: '2', school: 12, schoolPct: 3.82, nationalPct: 7.00 }, { grade: '3', school: 23, schoolPct: 7.32, nationalPct: 12.00 }, { grade: '4', school: 41, schoolPct: 13.06, nationalPct: 17.00 }, { grade: '5', school: 82, schoolPct: 26.11, nationalPct: 20.00 }, { grade: '6', school: 86, schoolPct: 27.39, nationalPct: 17.00 }],
+                    수학: [{ grade: '1', school: 7, schoolPct: 2.23, nationalPct: 4.00 }, { grade: '2', school: 18, schoolPct: 5.73, nationalPct: 7.00 }, { grade: '3', school: 29, schoolPct: 9.24, nationalPct: 12.00 }, { grade: '4', school: 55, schoolPct: 17.52, nationalPct: 17.00 }, { grade: '5', school: 86, schoolPct: 27.39, nationalPct: 20.00 }, { grade: '6', school: 81, schoolPct: 25.80, nationalPct: 17.00 }],
+                    영어: [{ grade: '1', school: 48, schoolPct: 15.29, nationalPct: 4.08 }, { grade: '2', school: 72, schoolPct: 22.93, nationalPct: 9.46 }, { grade: '3', school: 93, schoolPct: 29.62, nationalPct: 17.77 }, { grade: '4', school: 45, schoolPct: 14.33, nationalPct: 20.54 }, { grade: '5', school: 25, schoolPct: 7.96, nationalPct: 15.55 }, { grade: '6', school: 14, schoolPct: 4.46, nationalPct: 13.06 }]
+                },
                 history: [
                     { period: '24/6월', '1등급': {국어: 8.36, 수학: 14.16, 영어: 12.75}, '2등급': {국어: 12.10, 수학: 18.33, 영어: 14.41}, '3등급': {국어: 18.73, 수학: 26.53, 영어: 16.71}, '4등급': {국어: 26.51, 수학: 18.37, 영어: 20.46}, '5등급': {국어: 18.16, 수학: 10.41, 영어: 15.27}, '6등급': {국어: 11.24, 수학: 5.04, 영어: 10.37} },
                     { period: '25/3월', '1등급': {국어: 4.44, 수학: 5.95, 영어: 7.19}, '2등급': {국어: 10.95, 수학: 14.80, 영어: 11.52}, '3등급': {국어: 21.01, 수학: 28.25, 영어: 18.45}, '4등급': {국어: 21.30, 수학: 24.23, 영어: 25.32}, '5등급': {국어: 24.56, 수학: 20.21, 영어: 22.15}, '6등급': {국어: 12.72, 수학: 6.42, 영어: 12.45} },
                     { period: '25/10월', '1등급': {국어: 4.31, 수학: 6.61, 영어: 6.78}, '2등급': {국어: 11.20, 수학: 15.20, 영어: 12.40}, '3등급': {국어: 20.50, 수학: 29.10, 영어: 19.20}, '4등급': {국어: 22.10, 수학: 23.80, 영어: 24.10}, '5등급': {국어: 25.40, 수학: 18.50, 영어: 23.30}, '6등급': {국어: 14.20, 수학: 5.80, 영어: 10.50} },
-                    { period: '26/3월', '1등급': {국어: 4.59, 수학: 5.21, 영어: 4.60}, '2등급': {국어: 7.95, 수학: 14.11, 영어: 8.59}, '3등급': {국어: 16.82, 수학: 18.10, 영어: 27.61}, '4등급': {국어: 21.41, 수학: 24.85, 영어: 32.82}, '5등급': {국어: 28.13, 수학: 23.93, 영어: 15.03}, '6등급': {국어: 12.84, 수학: 9.48, 영어: 5.83} }
+                    { period: '26/3월', '1등급': {국어: 4.59, 수학: 5.21, 영어: 4.60}, '2등급': {국어: 7.95, 수학: 14.11, 영어: 8.59}, '3등급': {국어: 16.82, 수학: 18.10, 영어: 27.61}, '4등급': {국어: 21.41, 수학: 24.85, 영어: 32.82}, '5등급': {국어: 28.13, 수학: 23.93, 영어: 15.03}, '6등급': {국어: 12.84, 수학: 9.48, 영어: 5.83} },
+                    { period: '26/6월', '1등급': {국어: 2.19, 수학: 2.81, 영어: 5.00}, '2등급': {국어: 4.38, 수학: 12.81, 영어: 16.25}, '3등급': {국어: 10.31, 수학: 15.31, 영어: 32.81}, '4등급': {국어: 20.31, 수학: 16.88, 영어: 25.31}, '5등급': {국어: 27.19, 수학: 26.56, 영어: 10.94}, '6등급': {국어: 21.88, 수학: 19.69, 영어: 6.56} },
+                    { period: '26/9월', '1등급': {국어: 1.91, 수학: 2.23, 영어: 15.29}, '2등급': {국어: 3.82, 수학: 5.73, 영어: 22.93}, '3등급': {국어: 7.32, 수학: 9.24, 영어: 29.62}, '4등급': {국어: 13.06, 수학: 17.52, 영어: 14.33}, '5등급': {국어: 26.11, 수학: 27.39, 영어: 7.96}, '6등급': {국어: 27.39, 수학: 25.80, 영어: 4.46} }
                 ],
-                univPredict: { sky: 10, seoul: 35, flagship: 60 }
+                univPredict: { sky: 10, seoul: 35, flagship: 60 },
+                univPredictJune: { sky: 9, seoul: 32, flagship: 60 },
+                univPredictSep: { sky: 8, seoul: 30, flagship: 60 }
             },
 
             G2: {
@@ -65,6 +79,11 @@
                     국어: [{ grade: '1', school: 18, schoolPct: 5.19, nationalPct: 4.60 }, { grade: '2', school: 36, schoolPct: 10.37, nationalPct: 6.57 }, { grade: '3', school: 83, schoolPct: 23.92, nationalPct: 12.28 }, { grade: '4', school: 90, schoolPct: 25.94, nationalPct: 17.86 }, { grade: '5', school: 68, schoolPct: 19.60, nationalPct: 19.48 }, { grade: '6', school: 36, schoolPct: 10.37, nationalPct: 16.66 }],
                     수학: [{ grade: '1', school: 32, schoolPct: 9.20, nationalPct: 4.99 }, { grade: '2', school: 52, schoolPct: 14.94, nationalPct: 9.38 }, { grade: '3', school: 57, schoolPct: 16.38, nationalPct: 8.67 }, { grade: '4', school: 106, schoolPct: 30.46, nationalPct: 17.79 }, { grade: '5', school: 61, schoolPct: 17.53, nationalPct: 19.96 }, { grade: '6', school: 24, schoolPct: 6.90, nationalPct: 17.85 }],
                     영어: [{ grade: '1', school: 36, schoolPct: 10.37, nationalPct: 7.48 }, { grade: '2', school: 66, schoolPct: 19.02, nationalPct: 10.61 }, { grade: '3', school: 103, schoolPct: 29.68, nationalPct: 15.03 }, { grade: '4', school: 69, schoolPct: 19.88, nationalPct: 16.23 }, { grade: '5', school: 39, schoolPct: 11.24, nationalPct: 14.55 }, { grade: '6', school: 22, schoolPct: 6.34, nationalPct: 11.92 }]
+                },
+                detailedSep: {
+                    국어: [{ grade: '1', school: 13, schoolPct: 3.80, nationalPct: 4.00 }, { grade: '2', school: 45, schoolPct: 13.16, nationalPct: 7.00 }, { grade: '3', school: 55, schoolPct: 16.08, nationalPct: 12.00 }, { grade: '4', school: 76, schoolPct: 22.22, nationalPct: 17.00 }, { grade: '5', school: 81, schoolPct: 23.68, nationalPct: 20.00 }, { grade: '6', school: 40, schoolPct: 11.70, nationalPct: 17.00 }],
+                    수학: [{ grade: '1', school: 22, schoolPct: 6.43, nationalPct: 4.00 }, { grade: '2', school: 63, schoolPct: 18.42, nationalPct: 7.00 }, { grade: '3', school: 79, schoolPct: 23.10, nationalPct: 12.00 }, { grade: '4', school: 72, schoolPct: 21.05, nationalPct: 17.00 }, { grade: '5', school: 60, schoolPct: 17.54, nationalPct: 20.00 }, { grade: '6', school: 32, schoolPct: 9.36, nationalPct: 17.00 }],
+                    영어: [{ grade: '1', school: 42, schoolPct: 12.28, nationalPct: 7.48 }, { grade: '2', school: 65, schoolPct: 19.01, nationalPct: 10.61 }, { grade: '3', school: 94, schoolPct: 27.49, nationalPct: 15.03 }, { grade: '4', school: 73, schoolPct: 21.35, nationalPct: 16.23 }, { grade: '5', school: 34, schoolPct: 9.94, nationalPct: 14.55 }, { grade: '6', school: 19, schoolPct: 5.56, nationalPct: 11.92 }]
                 },
                 history: [
                     { period: '25/3월(고1)', 
@@ -86,10 +105,15 @@
                     { period: '26/6월(고2)',
                       '1등급': {국어: 5.19, 수학: 9.20, 영어: 10.37}, '2등급': {국어: 10.37, 수학: 14.94, 영어: 19.02}, '3등급': {국어: 23.92, 수학: 16.38, 영어: 29.68},
                       '4등급': {국어: 25.94, 수학: 30.46, 영어: 19.88}, '5등급': {국어: 19.60, 수학: 17.53, 영어: 11.24}, '6등급': {국어: 10.37, 수학: 6.90, 영어: 6.34}
+                    },
+                    { period: '26/9월(고2)',
+                      '1등급': {국어: 3.80, 수학: 6.43, 영어: 12.28}, '2등급': {국어: 13.16, 수학: 18.42, 영어: 19.01}, '3등급': {국어: 16.08, 수학: 23.10, 영어: 27.49},
+                      '4등급': {국어: 22.22, 수학: 21.05, 영어: 21.35}, '5등급': {국어: 23.68, 수학: 17.54, 영어: 9.94}, '6등급': {국어: 11.70, 수학: 9.36, 영어: 5.56}
                     }
                 ],
                 univPredict: { sky: 15, seoul: 45, flagship: 75 },
-                univPredictJune: { sky: 17, seoul: 44, flagship: 72 }
+                univPredictJune: { sky: 17, seoul: 44, flagship: 72 },
+                univPredictSep: { sky: 16, seoul: 44, flagship: 74 }
             },
 
             G1: {
@@ -104,6 +128,11 @@
                     수학: [{ grade: '1', school: 55, schoolPct: 15.76, nationalPct: 4.38 }, { grade: '2', school: 79, schoolPct: 22.64, nationalPct: 6.86 }, { grade: '3', school: 101, schoolPct: 28.94, nationalPct: 12.45 }, { grade: '4', school: 63, schoolPct: 18.05, nationalPct: 17.43 }, { grade: '5', school: 29, schoolPct: 8.31, nationalPct: 20.75 }, { grade: '6', school: 17, schoolPct: 4.87, nationalPct: 16.02 }],
                     영어: [{ grade: '1', school: 56, schoolPct: 16.05, nationalPct: 7.76 }, { grade: '2', school: 97, schoolPct: 27.79, nationalPct: 10.29 }, { grade: '3', school: 104, schoolPct: 29.80, nationalPct: 14.46 }, { grade: '4', school: 45, schoolPct: 12.89, nationalPct: 16.69 }, { grade: '5', school: 28, schoolPct: 8.02, nationalPct: 15.22 }, { grade: '6', school: 14, schoolPct: 4.01, nationalPct: 12.78 }]
                 },
+                detailedSep: {
+                    국어: [{ grade: '1', school: 25, schoolPct: 7.25, nationalPct: 4.17 }, { grade: '2', school: 65, schoolPct: 18.84, nationalPct: 7.56 }, { grade: '3', school: 78, schoolPct: 22.61, nationalPct: 12.06 }, { grade: '4', school: 83, schoolPct: 24.06, nationalPct: 16.73 }, { grade: '5', school: 65, schoolPct: 18.84, nationalPct: 19.87 }, { grade: '6', school: 23, schoolPct: 6.67, nationalPct: 17.63 }],
+                    수학: [{ grade: '1', school: 42, schoolPct: 12.17, nationalPct: 4.05 }, { grade: '2', school: 89, schoolPct: 25.80, nationalPct: 7.56 }, { grade: '3', school: 108, schoolPct: 31.30, nationalPct: 14.13 }, { grade: '4', school: 55, schoolPct: 15.94, nationalPct: 14.57 }, { grade: '5', school: 36, schoolPct: 10.43, nationalPct: 19.78 }, { grade: '6', school: 13, schoolPct: 3.77, nationalPct: 17.37 }],
+                    영어: [{ grade: '1', school: 52, schoolPct: 15.07, nationalPct: 7.25 }, { grade: '2', school: 66, schoolPct: 19.13, nationalPct: 9.25 }, { grade: '3', school: 94, schoolPct: 27.25, nationalPct: 12.64 }, { grade: '4', school: 71, schoolPct: 20.58, nationalPct: 14.75 }, { grade: '5', school: 34, schoolPct: 9.86, nationalPct: 14.59 }, { grade: '6', school: 18, schoolPct: 5.22, nationalPct: 13.52 }]
+                },
                 history: [
                     { period: '26/3월(고1)',
                       '1등급': {국어: 11.46, 수학: 13.47, 영어: 14.90}, '2등급': {국어: 18.91, 수학: 29.23, 영어: 23.50}, '3등급': {국어: 27.51, 수학: 25.50, 영어: 21.49},
@@ -112,10 +141,15 @@
                     { period: '26/6월(고1)',
                       '1등급': {국어: 9.17, 수학: 15.76, 영어: 16.05}, '2등급': {국어: 16.62, 수학: 22.64, 영어: 27.79}, '3등급': {국어: 28.94, 수학: 28.94, 영어: 29.80},
                       '4등급': {국어: 25.21, 수학: 18.05, 영어: 12.89}, '5등급': {국어: 13.47, 수학: 8.31, 영어: 8.02}, '6등급': {국어: 4.58, 수학: 4.87, 영어: 4.01}
+                    },
+                    { period: '26/9월(고1)',
+                      '1등급': {국어: 7.25, 수학: 12.17, 영어: 15.07}, '2등급': {국어: 18.84, 수학: 25.80, 영어: 19.13}, '3등급': {국어: 22.61, 수학: 31.30, 영어: 27.25},
+                      '4등급': {국어: 24.06, 수학: 15.94, 영어: 20.58}, '5등급': {국어: 18.84, 수학: 10.43, 영어: 9.86}, '6등급': {국어: 6.67, 수학: 3.77, 영어: 5.22}
                     }
                 ],
                 univPredict: { sky: 25, seoul: 65, flagship: 110 },
-                univPredictJune: { sky: 26, seoul: 63, flagship: 116 }
+                univPredictJune: { sky: 26, seoul: 63, flagship: 116 },
+                univPredictSep: { sky: 24, seoul: 60, flagship: 112 }
             }
         };
 
@@ -144,25 +178,43 @@
             const [activeTab, setActiveTab] = useState('G3');
             const [activeSubject, setActiveSubject] = useState('수학');
             const [activeTrendGrade, setActiveTrendGrade] = useState('1등급');
-            const [activePeriod, setActivePeriod] = useState('6월');
-            // 대입 예측·전략은 3월을 기본으로 살려두고, 클릭 시 6월도 확인 (실측 상세와 독립 토글)
+            const [activePeriod, setActivePeriod] = useState('9월');
+            // 대입 예측·전략은 3월을 기본으로 살려두고, 클릭 시 6월·9월도 확인 (실측 상세와 독립 토글)
             const [predPeriod, setPredPeriod] = useState('3월');
 
             const currentData = MASTER_DATA[activeTab];
 
-            // 6월 상세 데이터가 있는 학년(고1·고2)은 3월/6월 전환 가능, 없으면 3월 고정
-            const hasJune = !!currentData.detailedJune;
-            const showJune = hasJune && activePeriod === '6월';
-            const activeDetailed = showJune ? currentData.detailedJune : currentData.detailed;
-            const periodLabel = showJune ? '2026 6월' : '2026 3월';
+            // 기간별 데이터 맵 (해당 회차 데이터가 없는 학년은 토글에서 자동 제외)
+            const detailByPeriod = { '3월': currentData.detailed, '6월': currentData.detailedJune, '9월': currentData.detailedSep };
+            const predByPeriod = { '3월': currentData.univPredict, '6월': currentData.univPredictJune, '9월': currentData.univPredictSep };
+            const availPeriods = ['3월', '6월', '9월'].filter(p => detailByPeriod[p]);
+            const availPredPeriods = ['3월', '6월', '9월'].filter(p => predByPeriod[p]);
 
-            // 대입 예측/전략 인사이트 전용 기간 (3월 기본, 6월 토글)
-            const predShowJune = hasJune && predPeriod === '6월';
-            const predLabel = predShowJune ? '2026 6월' : '2026 3월';
+            // 실측 상세: 선택 회차(없으면 가장 최신 회차)
+            const effPeriod = detailByPeriod[activePeriod] ? activePeriod : availPeriods[availPeriods.length - 1];
+            const activeDetailed = detailByPeriod[effPeriod];
+            const periodLabel = '2026 ' + effPeriod;
+
+            // 대입 예측/전략 인사이트 전용 회차 (3월 기본, 없으면 최신)
+            const effPredPeriod = predByPeriod[predPeriod] ? predPeriod : availPredPeriods[availPredPeriods.length - 1];
+            const predLabel = '2026 ' + effPredPeriod;
+
+            // 실측 상세: 3·6·9월 회차 비교용 데이터 (선택 과목의 등급별 학교%·인원, 전국 참고)
+            const PERIOD_COLORS = { '3월': '#c7d2fe', '6월': '#818cf8', '9월': '#4338ca' };
+            const comparison = ['1', '2', '3', '4', '5', '6'].map(g => {
+                const row = { grade: g }; let any = false; let nat = null;
+                availPeriods.forEach(p => {
+                    const item = (detailByPeriod[p][activeSubject] || []).find(x => x.grade === g);
+                    if (item) { row[p] = item.schoolPct; row[p + '_cnt'] = item.school; nat = item.nationalPct; any = true; }
+                    else { row[p] = null; row[p + '_cnt'] = null; }
+                });
+                row.nat = nat;
+                return any ? row : null;
+            }).filter(Boolean);
 
             // 대학 예측 지표 생성 (타이트 vs 유연)
             const univPredictionData = useMemo(() => {
-                const base = (predShowJune && currentData.univPredictJune) ? currentData.univPredictJune : currentData.univPredict;
+                const base = predByPeriod[effPredPeriod] || currentData.univPredict;
                 return [
                     { 
                         title: "SKY / 의치한권", 
@@ -192,7 +244,7 @@
                         tag: "Standard Line"
                     }
                 ];
-            }, [currentData, predShowJune]);
+            }, [currentData, effPredPeriod]);
 
             const ADVISORY = {
                 G3: { kor: "국어: 표점 161 고난도 대응을 위해 독서 문항 오답 분석과 언매 실점 방지가 관건입니다.", math: "수학: 본교 1등급 우위가 확고하므로, 미적분 고득점을 통한 표점 극대화에 집중하십시오.", eng: "영어: 1등급 급감 상황에서 수능 최저 사수를 위한 주간 실전 훈련이 필수적입니다." },
@@ -202,10 +254,18 @@
 
             // 6월 모의고사 등급분포 기반 전략 (고1·고2). 3월/6월 토글에 연동.
             const ADVISORY_JUNE = {
+                G3: { kor: "국어: 6월 1등급 2.2%(7명)로 재수생 합류 후 상위권이 3월 대비 축소됐습니다. 실전 감각과 시간 배분 훈련이 필요합니다.", math: "수학: 6월 1·2등급 50명으로 최상위는 유지되나 4·5등급(139명) 중위권이 두텁습니다. 표점 관리와 지원선 점검이 필요합니다.", eng: "영어: 6월 1등급 5.0%(16명)로 절대평가 난도가 높았습니다. 수능 최저 충족 안정화를 위한 실전 훈련이 필요합니다." },
                 G2: { kor: "국어: 1등급이 4.3%→5.2%로 소폭 올랐으나 4등급(25.9%, 90명)에 밀집이 큽니다. 비문학 구조 독해로 3등급 벽을 넘기는 데 집중하십시오.", math: "수학: 4등급에 30.5%(106명)가 몰리며 3등급 이내 비중이 얇아졌습니다. 준킬러(3점 후반~4점 초반) 집중 훈련으로 3등급 돌파율을 높여야 합니다.", eng: "영어: 1등급 10.4%·2등급 19.0%로 상위 안정세입니다. 절대평가 강점을 살려 빈칸 추론 루틴으로 90점 안착을 유지하십시오." },
                 G1: { kor: "국어: 1등급이 11.5%→9.2%(40→32명)로 조정됐습니다. 상위권 일부가 빠진 만큼 비문학 독해 정확도를 끌어올려 1·2등급대를 재안정화해야 합니다.", math: "수학: 1등급이 13.5%→15.8%(47→55명)로 상승해 최상위층이 더 두터워졌습니다. 고난도 4점 문항의 논리 전개를 스스로 설명하며 표점 우위를 굳히십시오.", eng: "영어: 1등급 16.1%(56명)로 유입 성적이 더 강해졌습니다. 절대평가 90점 고정을 위해 빈칸·순서 고난도 유형 루틴을 확립하십시오." }
             };
-            const advisory = (predShowJune && ADVISORY_JUNE[activeTab]) ? ADVISORY_JUNE[activeTab] : ADVISORY[activeTab];
+            // 9월 모의고사 등급분포 기반 전략 (고1·고2·고3). 3월/6월/9월 토글에 연동.
+            const ADVISORY_SEP = {
+                G3: { kor: "국어: 9월 1등급 1.9%(6명)로 재수생 유입·난도 상승 속 최상위가 크게 축소됐습니다. 실전 시간관리로 표점 방어에 집중하십시오.", math: "수학: 9월 1등급 2.2%(7명), 4·5등급(141명)이 두텁습니다. 미적분 킬러 대응과 함께 정시 지원선을 재점검할 시점입니다.", eng: "영어: 9월 1등급 15.3%(48명)로 상대적 강세입니다. 수능 최저 충족의 안전판으로 활용하십시오." },
+                G2: { kor: "국어: 9월 평균등급 4.22로 6월(3.98)보다 하락, 4·5등급(76·81명) 밀집이 큽니다. 비문학 구조 독해로 중위권 상향이 시급합니다.", math: "수학: 9월 3등급 이내가 얇아지고 4등급(72명)·5등급(60명)이 두텁습니다. 준킬러 집중 훈련으로 3등급 벽을 넘어야 합니다.", eng: "영어: 1·2등급 비율이 세 회차 내내 개선(16.7%→31.4%)됐습니다. 강점을 수능 최저 충족의 핵심 축으로 삼으십시오." },
+                G1: { kor: "국어: 9월 1등급 7.2%(25명)로 상위권이 3·6·9월 하락 추세입니다. 비문학 정확도로 1~2등급 회복이 필요합니다.", math: "수학: 9월 1~3등급 239명(1등급 42명)으로 최상위층이 두텁습니다. 4점 고난도 실수 관리로 1등급을 굳히십시오.", eng: "영어: 9월 1등급 15.1%(52명)·1~3등급 212명으로 강세를 유지합니다. 절대평가 90점 고정 루틴을 이어가십시오." }
+            };
+            const advByPeriod = { '3월': ADVISORY, '6월': ADVISORY_JUNE, '9월': ADVISORY_SEP };
+            const advisory = (advByPeriod[effPredPeriod] && advByPeriod[effPredPeriod][activeTab]) ? advByPeriod[effPredPeriod][activeTab] : ADVISORY[activeTab];
 
             return (
                 <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
@@ -239,18 +299,11 @@
                                 <div className="flex items-center gap-4">
                                     <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><Icon name="Check" size={32} /></div>
                                     <div>
-                                        <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{periodLabel} {activeSubject} 실측 상세</h2>
-                                        <p className="text-sm text-gray-400 font-bold italic tracking-tighter uppercase">Score Distribution vs National Avg</p>
+                                        <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{activeSubject} 등급 분포 · 3·6·9월 비교</h2>
+                                        <p className="text-sm text-gray-400 font-bold italic tracking-tighter uppercase">School Grade Ratio by Exam (Mar · Jun · Sep)</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 flex-wrap">
-                                    {hasJune && (
-                                        <div className="flex items-center gap-1 bg-indigo-50 p-1.5 rounded-2xl border border-indigo-100 shadow-sm">
-                                            {['3월', '6월'].map(p => (
-                                                <button key={p} onClick={() => setActivePeriod(p)} className={`px-5 py-3 rounded-xl text-sm font-black transition-all ${activePeriod === p ? 'bg-indigo-600 text-white shadow-md scale-105' : 'text-indigo-400 hover:text-indigo-600'}`}>2026 {p}</button>
-                                            ))}
-                                        </div>
-                                    )}
                                     <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-200 shadow-sm">
                                         <Icon name="Search" size={18} className="text-indigo-400 ml-3" />
                                         {['국어', '수학', '영어'].map(sub => (
@@ -262,17 +315,15 @@
                             <div className="p-8 grid grid-cols-1 xl:grid-cols-2 gap-12">
                                 <div className="h-[450px] bg-gray-50/50 p-6 rounded-3xl relative overflow-hidden group">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <BarChart data={activeDetailed[activeSubject]} margin={{ top: 50, right: 30, left: 0, bottom: 0 }}>
+                                        <BarChart data={comparison} margin={{ top: 20, right: 20, left: 0, bottom: 0 }} barCategoryGap="18%">
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                            <XAxis dataKey="grade" axisLine={false} tickLine={false} tick={{fontSize: 13, fontWeight: 800}} />
-                                            <YAxis hide />
-                                            <Tooltip cursor={{fill: '#f1f5f9'}} contentStyle={{borderRadius: '16px', border: 'none'}} />
-                                            <Bar name="대신고" dataKey="schoolPct" fill="#6366f1" radius={[8, 8, 0, 0]} barSize={42}>
-                                                <LabelList dataKey="schoolPct" position="top" offset={15} className="chart-label-school" formatter={(val) => `${val}%`} />
-                                            </Bar>
-                                            <Bar name="전국" dataKey="nationalPct" fill="#cbd5e1" radius={[8, 8, 0, 0]} barSize={42}>
-                                                <LabelList dataKey="nationalPct" position="top" offset={15} className="chart-label-national" formatter={(val) => `${val}%`} />
-                                            </Bar>
+                                            <XAxis dataKey="grade" axisLine={false} tickLine={false} tick={{fontSize: 13, fontWeight: 800}} tickFormatter={(g) => `${g}등급`} />
+                                            <YAxis axisLine={false} tickLine={false} unit="%" tick={{fontSize: 11}} width={40} />
+                                            <Tooltip cursor={{fill: '#f1f5f9'}} contentStyle={{borderRadius: '16px', border: 'none'}} formatter={(v) => v == null ? '-' : `${v}%`} />
+                                            <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ paddingBottom: 12 }} />
+                                            {availPeriods.map(p => (
+                                                <Bar key={p} name={`2026 ${p}`} dataKey={p} fill={PERIOD_COLORS[p]} radius={[6, 6, 0, 0]} maxBarSize={26} />
+                                            ))}
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </div>
@@ -280,24 +331,31 @@
                                     <table className="w-full text-sm tabular-nums font-bold">
                                         <thead>
                                             <tr className="bg-indigo-900 text-white uppercase text-xs tracking-widest font-black italic">
-                                                <th className="py-5 px-6 text-left font-black">Grade</th>
-                                                <th className="py-5 px-6 text-center font-black">Count</th>
-                                                <th className="py-5 px-6 text-center font-black">School(%)</th>
-                                                <th className="py-5 px-6 text-center font-black">National(%)</th>
+                                                <th className="py-4 px-4 text-left font-black">등급</th>
+                                                {availPeriods.map(p => (<th key={p} className="py-4 px-4 text-center font-black">2026 {p}</th>))}
+                                                <th className="py-4 px-4 text-center font-black">전국</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-100">
-                                            {activeDetailed[activeSubject].map((item, idx) => (
+                                            {comparison.map((row, idx) => (
                                                 <tr key={idx} className="hover:bg-indigo-50/40 transition-colors">
-                                                    <td className="py-5 px-6 text-gray-700">{item.grade}등급</td>
-                                                    <td className="py-5 px-6 text-center text-indigo-600">{item.school}명</td>
-                                                    <td className="py-5 px-6 text-center text-gray-600">{item.schoolPct}%</td>
-                                                    <td className="py-5 px-6 text-center text-gray-400">{item.nationalPct}%</td>
+                                                    <td className="py-4 px-4 text-gray-700 font-black">{row.grade}등급</td>
+                                                    {availPeriods.map(p => (
+                                                        <td key={p} className="py-4 px-4 text-center">
+                                                            {row[p] == null ? <span className="text-gray-300">-</span> : (<span className="whitespace-nowrap"><span className="text-indigo-700 font-black">{row[p]}%</span> <span className="text-gray-400 font-bold text-xs">({row[p + '_cnt']}명)</span></span>)}
+                                                        </td>
+                                                    ))}
+                                                    <td className="py-4 px-4 text-center text-gray-400">{row.nat == null ? '-' : row.nat + '%'}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                            <div className="px-8 pb-8 -mt-4 text-[11px] text-gray-400 font-bold italic leading-relaxed">
+                                {activeTab === 'G1'
+                                    ? '※ 전국 열은 2026.9.2 전국연합학력평가 공식 등급별 인원분포표 기준입니다.'
+                                    : '※ 전국 열은 공식 9월 전국 인원분포표 입수 전까지의 참고치입니다 (국어·수학: 상대평가 표준분포 4·7·12·17·20·17%, 영어: 직전 회차 전국 비율). 학교 수치는 실측입니다.'}
                             </div>
                         </section>
 
@@ -314,7 +372,7 @@
                                 </div>
                                 <div className="h-[450px]">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <LineChart data={currentData.history.map(h => ({ name: h.period, 국어: h[activeTrendGrade]?.국어 || 0, 수학: h[activeTrendGrade]?.수학 || 0, 영어: h[activeTrendGrade]?.영어 || 0 }))} margin={{ top: 30, right: 60, left: 10, bottom: 20 }}>
+                                        <LineChart data={currentData.history.map(h => ({ name: h.period, 국어: h[activeTrendGrade]?.국어 ?? null, 수학: h[activeTrendGrade]?.수학 ?? null, 영어: h[activeTrendGrade]?.영어 ?? null }))} margin={{ top: 30, right: 60, left: 10, bottom: 20 }}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 13, fontWeight: 700}} dy={10} />
                                             <YAxis axisLine={false} tickLine={false} unit="%" tick={{fontSize: 12}} />
@@ -337,13 +395,13 @@
                                     <div className="p-3 bg-indigo-950 rounded-2xl text-white shadow-xl shadow-indigo-100"><Icon name="Target" size={28} /></div>
                                     <div>
                                         <h2 className="text-2xl font-black text-gray-800 tracking-tight uppercase">{predLabel} 대입 지원 가능 인원 예측 (Simulation)</h2>
-                                        <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">{hasJune ? `${predLabel} 모의고사 기준 · ` : ''}Conservative (Tight) vs Potential (Flexible) Analysis</p>
+                                        <p className="text-sm text-slate-400 font-bold uppercase tracking-tighter italic">{availPredPeriods.length > 1 ? `${predLabel} 모의고사 기준 · ` : ''}Conservative (Tight) vs Potential (Flexible) Analysis</p>
                                     </div>
                                 </div>
-                                {hasJune && (
+                                {availPredPeriods.length > 1 && (
                                     <div className="flex items-center gap-1 bg-indigo-50 p-1.5 rounded-2xl border border-indigo-100 shadow-sm shrink-0">
-                                        {['3월', '6월'].map(p => (
-                                            <button key={p} onClick={() => setPredPeriod(p)} className={`px-5 py-3 rounded-xl text-sm font-black transition-all ${predPeriod === p ? 'bg-indigo-600 text-white shadow-md scale-105' : 'text-indigo-400 hover:text-indigo-600'}`}>2026 {p}</button>
+                                        {availPredPeriods.map(p => (
+                                            <button key={p} onClick={() => setPredPeriod(p)} className={`px-5 py-3 rounded-xl text-sm font-black transition-all ${effPredPeriod === p ? 'bg-indigo-600 text-white shadow-md scale-105' : 'text-indigo-400 hover:text-indigo-600'}`}>2026 {p}</button>
                                         ))}
                                     </div>
                                 )}
@@ -412,10 +470,10 @@
                                         <Icon name="Award" size={48} className="text-amber-400" />
                                         <h3 className="text-3xl font-black tracking-widest uppercase italic underline decoration-amber-400 decoration-4 underline-offset-8">Strategic Insight · {predLabel}</h3>
                                     </div>
-                                    {hasJune && (
+                                    {availPredPeriods.length > 1 && (
                                         <div className="flex items-center gap-1 bg-white/10 p-1.5 rounded-2xl border border-white/15 shrink-0">
-                                            {['3월', '6월'].map(p => (
-                                                <button key={p} onClick={() => setPredPeriod(p)} className={`px-5 py-2.5 rounded-xl text-sm font-black transition-all ${predPeriod === p ? 'bg-amber-400 text-indigo-950 shadow-md scale-105' : 'text-amber-200/70 hover:text-white'}`}>2026 {p}</button>
+                                            {availPredPeriods.map(p => (
+                                                <button key={p} onClick={() => setPredPeriod(p)} className={`px-5 py-2.5 rounded-xl text-sm font-black transition-all ${effPredPeriod === p ? 'bg-amber-400 text-indigo-950 shadow-md scale-105' : 'text-amber-200/70 hover:text-white'}`}>2026 {p}</button>
                                             ))}
                                         </div>
                                     )}
