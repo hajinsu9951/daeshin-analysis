@@ -174,6 +174,259 @@
             );
         };
 
+        /**
+         * [INSIGHT_EXT] 진학 전문교사 관점의 Strategic Insight 확장 데이터
+         * - 영역별 1등급·1~2등급·1~3등급 누적 지표는 아래 cumStats()로 위 MASTER_DATA에서 자동 산출됩니다.
+         * - 진학 지표(모두 2·3등급 이내, 영역 합 구간)는 고1=원점수·등급컷, 고2=교육청 분석 자료, 고3=성적일람표에서 산출했습니다.
+         * - 영역 합은 국·수·영·탐구(우수 1과목) 중 등급이 좋은 순으로 계산합니다.
+         */
+        const PERIODS_ASC = ['3월', '6월', '9월'];
+        const cumStats = (arr) => {
+            const d = {}; (arr || []).forEach(x => { d[x.grade] = x; });
+            const pct = (k) => (d[k] ? d[k].schoolPct : 0);
+            const cnt = (k) => (d[k] ? d[k].school : 0);
+            return {
+                p1: pct('1'), p12: pct('1') + pct('2'), p123: pct('1') + pct('2') + pct('3'), p45: pct('4') + pct('5'),
+                n1: cnt('1'), n12: cnt('1') + cnt('2'), n123: cnt('1') + cnt('2') + cnt('3')
+            };
+        };
+
+        const INSIGHT_EXT = {
+            G3: {
+                '3월': {
+                    headline: "재학생만 응시한 3월 학평에서 수학 1~3등급 37.4%로 전국(23.5%)보다 13.9%p 높습니다. 수학이 가장 강한 영역이고, 영어 절대평가가 수능최저의 안전판 역할을 하는 구조입니다.",
+                    indicators: [
+                        { label: "수학 1~3등급", value: "37.4% (122명)", sub: "전국 23.5%" },
+                        { label: "국어 1~3등급", value: "29.4% (96명)", sub: "전국 24.1%" },
+                        { label: "영어 1~3등급", value: "40.8% (133명)", sub: "전국 31.3%" },
+                        { label: "국·수 4~5등급", value: "49.5% · 48.8%", sub: "중위권 밀집 구간" }
+                    ],
+                    subj: {
+                        kor: ["4·5등급에 162명(49.5%)이 몰려 있어 1~3등급 진입이 관건입니다. 독서(비문학) 오답을 ‘추론·적용·종합’ 유형으로 분류해 반복 실점 문항을 줄이십시오.", "언어와 매체/화법과 작문 선택은 4월 전에 확정하고 이후 변경을 최소화해 누적 학습량을 확보하십시오."],
+                        math: ["1~2등급 63명(19.3%)은 본교의 강점입니다. 미적분·확률과 통계 등 선택과목을 조기에 고정해 학습 시간을 집중하십시오.", "3점 후반~준킬러 문항의 풀이 시간을 줄여 고난도 문항에 쓸 시간을 확보하는 훈련이 필요합니다."],
+                        eng: ["1~3등급 40.8%로 전국보다 높지만 4~5등급도 47.9%입니다. 90점(1등급) 경계 문항(빈칸·순서·삽입)에서 점수를 끌어올리는 것이 최저 충족의 핵심입니다.", "대학마다 영어 등급 간 환산점수 차이가 다르므로, 영어 1·2등급 차이가 정시에서 얼마나 벌어지는지 희망 대학별로 확인하십시오."]
+                    },
+                    admission: [
+                        { tag: "수시", text: "3월은 교과·종합 지원 가능 범위를 넓게 잡는 단계입니다. 내신 평균과 3월 학평 위치를 함께 놓고, 수능최저가 있는 전형에서 ‘최저를 맞출 수 있는 영역 조합’을 미리 정해 두십시오." },
+                        { tag: "정시", text: "수학 1~2등급 63명, 국어 1~2등급 41명 구조이므로 국·수 표준점수 상위권 확보가 정시 경쟁력의 기준입니다. 탐구 2과목은 6월 전에 확정하는 것이 유리합니다." },
+                        { tag: "수능최저", text: "영어가 안전판이므로 ‘국·수 중 한 영역 + 영어 + 탐구’ 조합으로 최저를 설계하고, 국·수 중 한 영역은 2등급 이내로 만드는 것을 6월까지의 1차 목표로 삼으십시오." }
+                    ],
+                    roadmap: [
+                        { when: "3~5월", text: "중간고사 대비와 병행해 국·수 오답 노트 체계 구축, 선택과목·탐구 조합 확정" },
+                        { when: "6월 모평 전", text: "졸업생이 합류하면 등급 기준이 달라지므로 재학생 위치와 분리해 해석할 준비" },
+                        { when: "7~8월", text: "국·수 취약 단원 집중 보강, 학종 대비 세특·활동 정리" }
+                    ],
+                    comment: "3월 학평은 재학생만 응시하므로 졸업생이 합류하는 6·9월 모평과 등급의 의미가 다릅니다. 이 시점의 수치는 ‘본교 재학생의 출발 위치’로 읽고, 수학 우위를 유지하면서 국어 중위권(4·5등급 49.5%)을 끌어올리는 것을 1학기의 핵심 과제로 삼아야 합니다."
+                },
+                '6월': {
+                    headline: "졸업생이 합류한 6월 모평에서 국·수 1~3등급이 각각 54명·99명으로 3월(96명·122명)보다 줄었지만, 영어 1~3등급은 133명→173명으로 늘어 영어가 최저 충족의 안전판으로 자리 잡았습니다.",
+                    indicators: [
+                        { label: "국·수·영 모두 2등급 이내", value: "8명", sub: "응시 320명 중 2.5%" },
+                        { label: "국·수·영 모두 3등급 이내", value: "29명", sub: "응시 320명 중 9.1%" },
+                        { label: "2개 영역 합 6 이내", value: "120명", sub: "37.5%" },
+                        { label: "3개 영역 합 12 이내", value: "176명", sub: "55.0%" }
+                    ],
+                    subj: {
+                        kor: ["1~2등급 21명(6.6%)으로 상위권이 얇습니다. 6월 이후에는 새로운 자료보다 ‘시간 배분(독서 3지문 25분 이내)’ 중심의 실전 훈련으로 전환하십시오.", "6등급 70명(21.9%)은 독서·문학 개념 정리가 필요한 학생군이므로 개별 면담으로 영역별 학습 배분을 점검하십시오."],
+                        math: ["1~2등급 50명(15.6%)으로 강점은 유지되나 3월(63명)보다 13명 줄었습니다. 공통 고난도와 선택과목 킬러를 분리해 점검하십시오.", "4·5등급 139명(43.4%)은 오답을 ‘개념 부족/계산 실수/시간 부족’으로 분류해 원인별로 처방을 달리하십시오."],
+                        eng: ["1~3등급 173명(54.1%)으로 3월보다 40명 늘었습니다. 2등급 경계(80점대)에서 1등급(90점)으로 올리는 빈칸·어법·요약 유형을 집중 보완하십시오.", "영어 1등급(16명)은 대학별 환산점수에서 2등급과 차이가 큰 경우가 많으므로 희망 대학의 반영 방식을 확인해 두십시오."]
+                    },
+                    admission: [
+                        { tag: "수시", text: "6월 모평은 수시 6장 구성의 1차 기준입니다. 전형별 수능최저를 확인하고, 6월 성적으로 최저 통과 가능성이 낮은 전형은 상향 지원에서 제외해 지원 카드를 효율적으로 배분하십시오." },
+                        { tag: "정시", text: "졸업생이 합류한 집단에서 본교 재학생 위치는 3월보다 낮게 나옵니다. 정시는 6월 등급이 아니라 9월 모평 이후의 표준점수·백분위로 지원선을 확정한다는 전제로, 6월은 취약 영역 진단에 사용하십시오." },
+                        { tag: "수능최저", text: "교사 제공 6월 대학별 최저 판정표 기준 통과 인원은 고대 학우 기준 4명, 연대 자연 28명, 한양 추천 30명, 외대(서) 학추 46명, 경대 2합7 179명입니다. 상위권 대학일수록 통과 인원이 급격히 줄므로 최저 미충족 위험이 큰 학생은 카드 구성을 조정해야 합니다." }
+                    ],
+                    roadmap: [
+                        { when: "6~7월", text: "6월 모평 오답 분석, 영역별 취약 유형 확정 및 여름방학 계획 수립" },
+                        { when: "8월", text: "수시 원서 대상 전형별 수능최저·면접·서류 마감 일정 확정, 학생별 면담" },
+                        { when: "9월 모평", text: "최종 위치 확인 후 수시 6장 확정, 정시 가·나·다군 후보 압축" }
+                    ],
+                    comment: "6월은 졸업생이 처음 합류하는 시험이라 재학생 등급이 구조적으로 낮아집니다. 3월 학평과 등급을 1:1로 비교하기보다 ‘영역별 1~3등급 인원’의 변화와 영어 안전판 확보 여부를 중심으로 읽으십시오. 국·수·영 모두 3등급 이내가 29명(9.1%)에 그쳐 수능최저 충족 설계가 수시 성패를 가를 것으로 보입니다."
+                },
+                '9월': {
+                    headline: "9월 모평에서 국·수·영 모두 3등급 이내는 16명으로 6월(29명)보다 줄었습니다. 영어 1~3등급은 173명→213명으로 늘었지만 국·수 1~3등급은 54명→41명, 99명→54명으로 줄어, 영어 안전판 위에서 국·수 한 영역 이상을 끌어올리는 것이 수능까지의 관건입니다.",
+                    indicators: [
+                        { label: "국·수·영 모두 2등급 이내", value: "8명", sub: "응시 313명 중 2.6%" },
+                        { label: "국·수·영 모두 3등급 이내", value: "16명", sub: "5.1% (6월 29명)" },
+                        { label: "2개 영역 합 5 이내", value: "73명", sub: "23.2% (6월 79명)" },
+                        { label: "3개 영역 합 10 이내", value: "88명", sub: "28.0% (6월 100명)" }
+                    ],
+                    subj: {
+                        kor: ["1~3등급 41명(13.1%), 6등급 86명(27.4%)으로 하위 구간이 넓습니다. 새 자료보다 실전 모의 3~4회분의 시간 배분 재점검과 ‘아는 문항을 틀리지 않는 것’에 집중하십시오.", "문학·독서 중 실점이 큰 한 영역을 정해 주 단위로 오답 유형을 줄이는 방식이 효과적입니다."],
+                        math: ["1~2등급 25명(8.0%)으로 6월(50명)의 절반입니다. 수능 직전에는 새로운 유형보다 ‘계산 실수·조건 누락’으로 잃는 점수를 줄이는 것이 등급 상승에 직접적입니다.", "최근 3회 모의고사에서 반복된 실수 유형을 목록으로 만들어 점검하십시오."],
+                        eng: ["1~2등급 120명(38.2%), 1~3등급 213명(67.8%)으로 6월(68명·173명)보다 크게 늘었습니다. 90점대 유지를 위한 주 1회 실전 풀이로 감각을 유지하십시오.", "4등급 이하 101명(32.2%)은 영어가 최저 충족의 걸림돌이 될 수 있으므로 별도로 관리하십시오."]
+                    },
+                    admission: [
+                        { tag: "수시", text: "수시 원서 접수 이후에는 전형별 수능최저 충족 가능 여부와 면접·논술 일정이 핵심입니다. 2개 영역 합 5 이내 73명, 3개 영역 합 7 이내 29명 수준이므로, 합 기준이 높은 전형에 지원한 학생은 미충족 영역을 수능 전까지 끌어올려야 합니다." },
+                        { tag: "정시", text: "9월 모평 이후 정시는 국·수 표준점수와 탐구 백분위로 군별 지원선을 잡는 단계입니다. 3개 영역 합 10 이내 88명(28.0%), 12 이내 154명(49.0%)은 중상위권 대학 지원 구간의 참고선입니다." },
+                        { tag: "수능최저", text: "영어 67.8%가 3등급 이내이므로 영어를 포함하는 최저는 충족 가능성이 높습니다. 국·수를 모두 요구하는 최저는 충족 인원이 매우 적으므로, 해당 전형 지원자는 개별 면담으로 위험도를 관리해야 합니다." }
+                    ],
+                    roadmap: [
+                        { when: "10월", text: "수시 대학별고사(면접·논술) 준비와 수능 대비 일일 루틴 고정" },
+                        { when: "수능 전 4주", text: "실전 모의 주 2~3회, 오답 유형 정리, 수능 시간표에 맞춘 컨디션 조절" },
+                        { when: "수능 이후", text: "가채점 → 수시 결과 확인 → 정시 가·나·다군 전략 면담" }
+                    ],
+                    comment: "9월 모평은 졸업생 응시 비중이 커서 재학생 등급이 구조적으로 낮게 나오는 경향이 있습니다. 그럼에도 국·수 1~3등급 인원이 줄었다는 사실은 분명하므로, 수능까지는 ‘영어 유지 + 국·수 한 영역 이상 2등급 진입’을 현실적 목표로 삼고 수시 지원 전형의 최저 충족 가능성을 학생별로 점검하는 것이 진학 지도의 우선순위입니다."
+                }
+            },
+
+            G2: {
+                '3월': {
+                    headline: "3월 학평에서 수학 1~3등급 52.2%(182명)로 전국(23.8%)의 2배 이상, 영어도 53.3%로 전국 38.9%를 웃돕니다. 국어는 4~5등급이 189명(54.1%)으로 보완이 필요한 영역입니다.",
+                    indicators: [
+                        { label: "수학 1~3등급", value: "52.2% (182명)", sub: "전국 23.8%" },
+                        { label: "영어 1~3등급", value: "53.3% (186명)", sub: "전국 38.9%" },
+                        { label: "국어 4~5등급", value: "54.1% (189명)", sub: "중위권 밀집" },
+                        { label: "국·수·영 모두 2등급 이내", value: "13명", sub: "모두 3등급 이내 67명" }
+                    ],
+                    subj: {
+                        kor: ["4·5등급에 189명이 몰려 있습니다. 고2 1학기는 독서 지문 구조 독해와 문학 개념어 정리를 병행해 3등급 벽을 넘는 시기입니다.", "내신 국어(교과서 중심)와 모의고사 국어(초월 지문)의 간격을 줄이기 위해 주 2회 이상 모의 지문을 시간을 재고 풀이하십시오."],
+                        math: ["1~2등급 86명(24.6%)의 두터운 상위층이 강점입니다. 진로 계열에 맞는 수학 선택 경로를 2학기 전에 구체화하십시오.", "3등급 96명(27.5%)의 준상위권이 2등급으로 올라올 수 있도록 4점 문항 접근 전략을 지도하십시오."],
+                        eng: ["1~2등급 99명(28.4%)으로 안정적입니다. 90점 고정을 목표로 하고, 학습 시간 일부를 국·수 보강에 재배분할 여유가 있습니다.", "4~5등급 131명(37.5%)은 고2 1학기 안에 어휘·구문 기본 독해력을 보강해야 합니다."]
+                    },
+                    admission: [
+                        { tag: "학생부·수시", text: "현 고2는 2028학년도 대입을 준비하는 학년입니다. 교과·종합 모두 내신과 세특이 핵심이므로, 모의고사 등급과 별개로 내신 5등급제 기준의 위치와 진로 연계 활동을 병행 관리하십시오." },
+                        { tag: "수능 대비", text: "국·수·영 모두 3등급 이내 67명을 넓히는 것이 고3 수능최저 충족의 기반입니다. 국어 중위권(4~5등급)을 1학기 중 3등급으로 끌어올리는 것이 최우선 과제입니다." },
+                        { tag: "진로·선택", text: "진로 계열(인문·자연·의약학)에 따라 탐구 과목과 수학 선택을 2학기 이전에 구체화하고 대학별 권장과목을 확인하십시오." }
+                    ],
+                    roadmap: [
+                        { when: "3~6월", text: "1학기 내신과 병행해 국어 4~5등급 집단의 독서 루틴 구축" },
+                        { when: "6월 학평", text: "수학 선택 경로 탐색 결과와 6월 위치 비교" },
+                        { when: "7~8월", text: "국·수 취약 단원 보강, 탐구 과목 조합 탐색" }
+                    ],
+                    comment: "고2 3월은 고1 성적이 이어진 출발선으로, 수학·영어가 전국보다 크게 앞선 반면 국어 중위권(4~5등급 54.1%)이 과제입니다. 모의고사 등급과 함께 학생부(내신·세특) 기반을 같이 다지는 것이 이 학년의 핵심입니다."
+                },
+                '6월': {
+                    headline: "6월 학평에서 수학 1~3등급이 182명→141명으로 줄고 4~5등급이 167명(48.0%)으로 늘었습니다. 반면 영어 1~3등급은 205명(59.1%)으로 늘고 국·수·영 모두 2등급 이내가 13명→25명으로 늘어, 상위권은 두터워지고 중위권은 수학에서 흔들리는 분화 양상입니다.",
+                    indicators: [
+                        { label: "국·수·영 모두 2등급 이내", value: "25명", sub: "3월 13명" },
+                        { label: "국·수·영 모두 3등급 이내", value: "86명", sub: "3월 67명" },
+                        { label: "3개 영역 합 10 이내", value: "214명", sub: "3월 195명" },
+                        { label: "수학 4등급", value: "106명 (30.5%)", sub: "가장 두터운 구간" }
+                    ],
+                    subj: {
+                        kor: ["1~3등급 137명(39.5%)으로 3월과 같은 수준이고 4~5등급은 189명→158명으로 줄었습니다. 중위권이 위로 이동하는 긍정 신호이므로 독서 구조 독해 루틴을 유지하십시오.", "6등급 36명(10.4%)은 3월(15명)의 2배 이상입니다. 하위 집단은 문법·어휘 등 기본 개념 점검이 우선입니다."],
+                        math: ["4등급이 106명(30.5%)으로 가장 두텁습니다. 4→3등급 전환을 위해 3점 후반~4점 초반 ‘준킬러’ 유형을 주 단위로 훈련하십시오.", "1~2등급 84명(24.1%)은 3월(86명)과 비슷해 상위권은 견고합니다. 상위권 학생은 고난도 문항 시간 배분을 별도로 지도하십시오."],
+                        eng: ["1~2등급 102명(29.4%), 1~3등급 205명(59.1%)으로 안정적입니다. 영어는 유지 전략으로 가고 학습 시간 일부를 수학 준킬러 보강에 재배분하는 것이 효율적입니다."]
+                    },
+                    admission: [
+                        { tag: "학생부·수시", text: "국·수·영 모두 3등급 이내가 86명(3월 67명)으로 늘어 교과·종합 전형의 수능최저 충족 기반이 넓어졌습니다. 1학기 내신과 6월 모의 위치를 함께 보고 희망 계열별 전형 후보를 압축하십시오." },
+                        { tag: "수능 대비", text: "3개 영역 합 10 이내 214명(3월 195명)으로 중상위권 대학 지원 구간 인원이 늘었습니다. 다만 수학 4등급 밀집이 해소되지 않으면 고3에서 최저 충족이 어려워질 수 있습니다." },
+                        { tag: "진로·선택", text: "탐구 평균등급이 6월에 개선되었습니다(사탐 4.22→3.98, 과탐 4.39→4.11). 계열별 탐구 조합을 겨울방학 이전에 확정하십시오." }
+                    ],
+                    roadmap: [
+                        { when: "7~8월", text: "수학 4등급 집단 대상 준킬러 집중 보강, 여름방학 계획 수립" },
+                        { when: "9월 학평", text: "2학기 시작 후 국어 4~5등급 집단 재점검, 탐구 선택 조합 재확인" },
+                        { when: "11~12월", text: "겨울방학 전 희망 계열 확정, 고3 수능 체제 전환 준비" }
+                    ],
+                    comment: "6월은 영어가 안정화되고 상위 학생이 늘어 ‘두터운 상위권’이 형성된 시점입니다. 다만 수학 4등급 106명 집단이 수능최저 충족의 분수령이므로, 이 집단의 3등급 진입을 2학기 핵심 지도 과제로 삼아야 합니다."
+                },
+                '9월': {
+                    headline: "9월 학평에서 수학 1~3등급이 141명→164명으로 회복됐지만 국어는 137명→113명으로 줄어 평균등급이 3.86→3.98→4.22로 내려갔습니다. 국·수·영 모두 2등급 이내는 25명으로 6월 수준을 유지했고, 모두 3등급 이내는 86명→65명으로 줄었습니다.",
+                    indicators: [
+                        { label: "국·수·영 모두 2등급 이내", value: "25명", sub: "7.3% (3월 13명)" },
+                        { label: "국·수·영 모두 3등급 이내", value: "65명", sub: "19.0% (6월 86명)" },
+                        { label: "3개 영역 합 7 이내", value: "84명", sub: "24.6%" },
+                        { label: "3개 영역 합 10 이내", value: "214명", sub: "62.6%" }
+                    ],
+                    subj: {
+                        kor: ["4·5등급 157명(45.9%)에 밀집했고 6등급도 40명(11.7%)입니다. 2학기 들어 학습 시간이 특정 영역으로 쏠린 영향이 있어 보이므로 영역별 학습 시간 배분을 학생과 함께 점검하십시오.", "비문학 구조 독해(문단 기능·논증 구조 표시)를 주 3회 이상 훈련하고, 문학은 작품 군별 오답 유형을 정리하십시오."],
+                        math: ["1~3등급이 164명(48.0%)으로 6월(141명)보다 23명 늘고 4~5등급은 132명(38.6%)으로 줄었습니다. 준킬러 집중 훈련의 성과로 읽히므로 같은 방식을 4·5등급 집단에 확대하십시오.", "평균등급은 3.69로 큰 변화가 없지만 개인 편차가 확대되었습니다. 상·하위 학생을 나누어 난이도별 과제를 차등 제공하십시오."],
+                        eng: ["1~2등급 107명(31.3%), 1~3등급 201명(58.8%)으로 세 회차 연속 안정적입니다(1~2등급 28.4%→29.4%→31.3%). 영어는 수능최저의 안전판이므로 유지에 집중하고, 4~5등급 107명은 기본 독해력을 보강하십시오."]
+                    },
+                    admission: [
+                        { tag: "학생부·수시", text: "국·수·영 모두 3등급 이내 65명(19.0%), 2개 영역 합 5 이내 156명(45.6%)입니다. 수능최저를 요구하는 교과·종합 전형을 고려하는 학생은 이 구간 진입 여부를 기준으로 전형 후보를 압축하십시오." },
+                        { tag: "수능 대비", text: "3개 영역 합 6 이내 58명(17.0%)은 최상위권 학생부교과, 합 10 이내 214명(62.6%)은 중상위권 대학 다수의 일반적 참고 구간입니다. 4개 영역 합 8 이내는 40명(11.7%)으로 최상위권 정시·의약학 계열 참고 인원입니다." },
+                        { tag: "진로·선택", text: "영역 간 격차가 큰 학생(한 영역이 다른 영역보다 3등급 이상 벌어짐)이 42명입니다. 강점 영역은 유지하되 약점 영역이 수능최저의 걸림돌이 되지 않도록 시간 배분을 조정하십시오. 사탐 평균등급은 4.28, 과탐은 4.20으로 6월보다 소폭 조정되었습니다." }
+                    ],
+                    roadmap: [
+                        { when: "10~11월", text: "국어 중위권 집중 보강, 영역 간 격차가 큰 학생 개별 면담" },
+                        { when: "12월 학평 이후", text: "겨울방학 전 희망 대학·전형 후보 압축, 탐구 선택 조합 확정" },
+                        { when: "고3 진입 전", text: "수능최저 기준(2합·3합)별 목표 등급을 학생별로 설정하고 월 단위로 점검" }
+                    ],
+                    comment: "9월의 특징은 ‘상위권 유지, 중위권 분화’입니다. 국·수·영 모두 2등급 이내 25명은 유지됐지만 모두 3등급 이내는 86명→65명으로 줄어 수능최저 충족 기반이 일부 약해졌습니다. 영역별 평균보다 학생 개개인의 영역 간 격차와 회차별 흐름을 보고 개별 지도하는 것이 진학 지도의 핵심입니다."
+                }
+            },
+
+            G1: {
+                '3월': {
+                    headline: "신입생 3월 학평에서 국어 1~3등급 57.9%, 수학 68.2%로 전국(24.3%·23.1%)의 2배 이상입니다. 국·수·영 모두 3등급 이내가 138명(39.5%)인 우수한 출발선이지만, 모의고사 등급에 안주하지 않고 학생부 기반을 함께 설계해야 하는 시기입니다.",
+                    indicators: [
+                        { label: "국어 1~3등급", value: "57.9% (202명)", sub: "전국 24.3%" },
+                        { label: "수학 1~3등급", value: "68.2% (238명)", sub: "전국 23.1%" },
+                        { label: "영어 1~3등급", value: "59.9% (209명)", sub: "전국 42.4%" },
+                        { label: "국·수·영 모두 2등급 이내", value: "42명", sub: "모두 3등급 이내 138명" }
+                    ],
+                    subj: {
+                        kor: ["1등급 40명(11.5%)은 전국(4.2%)의 약 2.8배입니다. 중학교 내신식 암기에서 벗어나 수능형 구조 독해(문단 요지·논증 구조 표시)로 전환하는 것이 상위권 유지의 조건입니다.", "4~5등급 131명(37.5%)은 독서 경험이 부족한 학생군일 수 있으므로 교과 연계 독서로 독서 습관을 만들도록 지도하십시오."],
+                        math: ["1~2등급 149명(42.7%)은 본교 신입생의 최대 강점입니다. 고난도 문항의 풀이 과정을 스스로 설명하는 훈련으로 상위권을 굳히십시오.", "4·5등급 103명(29.5%)은 중학교 수학 개념 결손 여부를 확인해 기초를 보강하십시오."],
+                        eng: ["1~2등급 134명(38.4%)이지만 전국과의 격차는 국·수보다 작습니다(1~3등급 59.9% 대 42.4%). 어휘·구문 기본기를 조기에 마무리하고 학습 시간 일부를 국·수에 돌릴 수 있습니다."]
+                    },
+                    admission: [
+                        { tag: "학생부 설계", text: "고1은 대입의 출발점인 학생부를 설계하는 시기입니다. 내신(5등급제) 관리, 교과 세특, 동아리·진로 활동이 이후 교과·종합 전형의 기반이 되므로 모의고사 등급과 별도로 교과별 성취 목표를 세우십시오." },
+                        { tag: "수능 기초", text: "3월 성적은 탐색 지표입니다. 국·수·영 모두 3등급 이내 138명이라는 수치에 안주하지 말고 공통 과목 기본기를 고2까지 이어가십시오." },
+                        { tag: "진로·과목선택", text: "1학기 말 진로 탐색 결과에 따라 고2 선택과목을 설계해야 하므로, 희망 계열별 대학 권장과목을 함께 확인하십시오." }
+                    ],
+                    roadmap: [
+                        { when: "3~6월", text: "중간·기말 내신 대비와 병행해 국·수·영 주당 학습 루틴 고정" },
+                        { when: "7~8월", text: "진로 탐색 활동 정리, 2학기 교과 세특 주제 선정" },
+                        { when: "9월 학평", text: "2학기 위치 확인, 고2 선택과목 탐색" }
+                    ],
+                    comment: "고1 3월은 중학교 학습 성과가 그대로 반영된 출발선입니다. 본교 신입생은 전국 대비 국·수에서 매우 높은 출발선을 보이지만 모의고사 등급은 학년이 올라가며 재조정됩니다. 수능형 공부 체질로 전환하면서 학생부 기반을 함께 설계하는 것이 고1의 핵심입니다."
+                },
+                '6월': {
+                    headline: "6월 학평에서 영어 1~3등급은 209명→257명(73.6%)으로, 수학 1등급은 47명→55명(15.8%)으로 늘었지만 국어 1등급은 40명→32명(9.2%)으로 줄었습니다. 국·수·영 모두 3등급 이내는 138명→145명으로 소폭 늘었습니다.",
+                    indicators: [
+                        { label: "국어 1등급", value: "32명 (9.2%)", sub: "3월 40명" },
+                        { label: "수학 1등급", value: "55명 (15.8%)", sub: "3월 47명" },
+                        { label: "영어 1~3등급", value: "257명 (73.6%)", sub: "3월 209명" },
+                        { label: "국·수·영 모두 3등급 이내", value: "145명", sub: "3월 138명" }
+                    ],
+                    subj: {
+                        kor: ["1등급이 줄고 4~5등급이 135명(38.7%)으로 늘었습니다. 비문학 정확도와 문학 작품 해석 훈련을 나누어 원인을 진단하고, 3월보다 하락 폭이 큰 학생은 개별 면담하십시오.", "여름방학 중 비문학 4지문 세트를 주 3회 시간을 재고 풀이하는 루틴을 권장합니다."],
+                        math: ["1등급 55명(15.8%)으로 최상위층이 두터워졌습니다. 4점 고난도 문항의 논리 전개를 스스로 설명하는 풀이 훈련으로 우위를 굳히십시오.", "4·5등급 92명(26.4%)은 3월(103명)보다 줄어든 긍정 신호이므로 기본 개념 보강을 지속하십시오."],
+                        eng: ["1~3등급 257명(73.6%), 4~5등급 73명(20.9%)으로 영어 강세가 뚜렷합니다. 90점 고정 루틴을 이어가고 원문 심화 독해로 체력을 기르십시오."]
+                    },
+                    admission: [
+                        { tag: "학생부 설계", text: "1학기 내신 결과와 6월 모의 위치를 함께 놓고 교과별 강·약점을 정리하십시오. 영어가 안정적이므로 탐구(사회·과학)와 수학 기본기에 학습 시간을 더 배분할 수 있습니다." },
+                        { tag: "수능 기초", text: "모두 3등급 이내 145명(41.7%)은 고1 단계에서 매우 높은 수치입니다. 다만 국어 1등급이 줄어드는 추세이므로 여름방학에 국어 독해 기반을 다지는 것이 이후 수능최저 충족에 유리합니다." },
+                        { tag: "진로·과목선택", text: "진로 계열 탐색 결과를 바탕으로 2학기 선택과목 희망 조사 전에 대학별 권장과목을 확인하십시오." }
+                    ],
+                    roadmap: [
+                        { when: "7~8월", text: "국어 비문학 루틴 구축, 수학 고난도 풀이 설명 훈련" },
+                        { when: "9월 학평", text: "2학기 출발 위치 확인, 고2 선택과목 탐색 결과 반영" },
+                        { when: "2학기", text: "진로 활동·세특 주제 구체화, 계열별 권장과목 확정" }
+                    ],
+                    comment: "6월은 영어·수학 상위권이 강화되고 국어가 조정된 시기입니다. 영역별 강약이 뚜렷해졌으므로 ‘강한 영역은 유지하고 약한 영역은 원인을 진단한다’는 원칙으로 학생별 지도를 구체화하는 것이 중요합니다."
+                },
+                '9월': {
+                    headline: "9월 학평에서 수학 1~3등급은 239명(69.3%)으로 전국(25.7%)의 2.7배를 유지했지만, 국어 1등급은 40명→32명→25명으로 계속 줄었고 영어 1~3등급도 257명→212명으로 조정되었습니다. 국·수·영 모두 3등급 이내는 145명→120명입니다.",
+                    indicators: [
+                        { label: "수학 1~3등급", value: "69.3% (239명)", sub: "전국 25.7%" },
+                        { label: "국어 1등급", value: "25명 (7.2%)", sub: "3월 40명 → 6월 32명" },
+                        { label: "국·수·영 모두 2등급 이내", value: "35명", sub: "10.2% (6월 42명)" },
+                        { label: "국·수·영 모두 3등급 이내", value: "120명", sub: "35.0% (6월 145명)" }
+                    ],
+                    subj: {
+                        kor: ["1~3등급이 202명→191명→168명으로 두 회차 연속 줄었고 4~5등급이 148명(42.9%)으로 늘었습니다. 1학기 대비 하락 추세가 뚜렷한 영역이므로 겨울방학 전에 독서(비문학) 구조화 훈련을 본격화하십시오.", "지문 길이·난도 증가와 학습 시간 배분 변화가 겹친 경우가 있으므로, 학생 면담으로 원인을 구분해 지도하십시오."],
+                        math: ["1~2등급 131명(38.0%), 1~3등급 239명(69.3%)으로 본교 최강 영역입니다. 4·5등급 91명(26.4%)은 3월(103명)보다 줄었습니다. 고난도 4점 문항의 논리 전개를 설명하는 훈련으로 1등급(42명)을 더 늘리십시오.", "고1 공통 수학 체계를 고2 선택과목 학습 전에 완성하면 이후 학습 부담이 줄어듭니다."],
+                        eng: ["1~3등급 212명(61.5%)으로 전국(29.1%)의 2배 이상이나 6월(257명)보다 45명 줄었습니다. 90점 유지를 위해 주 1회 실전 풀이와 어휘·구문 복습을 병행하십시오.", "4~5등급 105명(30.4%)은 기본 독해력 보강이 필요한 학생군입니다."]
+                    },
+                    admission: [
+                        { tag: "학생부 설계", text: "고1을 마칠 때까지 학생부 기초 자료(교과 성취, 창체, 독서)가 고르게 정리되어야 합니다. 모의고사 영역별 위치는 ‘진로 적합성 탐색’ 지표로 활용하고, 희망 계열이 정해지면 고2 교과 이수 계획에 반영하십시오." },
+                        { tag: "수능 기초", text: "9월까지 국어 1등급이 계속 줄었으므로 겨울방학 중 국어 기초 체력(독서 지문 구조화)을 우선 보강하십시오. 국·수·영 모두 2등급 이내 35명(10.2%)이 현 단계의 최상위 집단입니다." },
+                        { tag: "진로·과목선택", text: "사회탐구 1~3등급 188명(54.5%), 과학탐구 210명(60.9%), 한국사 1등급 179명(51.9%)입니다(전국 사탐 1~3등급 27.2%, 과탐 24.4%). 계열별 탐구 선택 탐색 결과를 고2 교육과정 선택에 반영하십시오." }
+                    ],
+                    roadmap: [
+                        { when: "10~11월", text: "2학기 기말 대비와 병행해 국어 독서 루틴 구축, 11월 학평 대비" },
+                        { when: "12월", text: "겨울방학 계획: 고2 선택과목 확정, 국·수 기초 보강" },
+                        { when: "고2 진입 전", text: "진로 계열별 대학 권장과목 확인, 교과 세특 주제 정리" }
+                    ],
+                    comment: "고1 9월은 ‘상위권은 여전히 강하지만 국어가 흔들리는’ 구간입니다. 전국 대비 압도적 출발선(수학 69.3% 대 25.7%)에 안주하지 않고 국어 기초 체력 보강을 겨울방학의 핵심 과제로 삼는 한편, 모의고사 등급이 아닌 학생부 성취 기반을 고2로 이어가도록 지도하는 것이 중요합니다."
+                }
+            }
+        };
+
         const App = () => {
             const [activeTab, setActiveTab] = useState('G3');
             const [activeSubject, setActiveSubject] = useState('수학');
@@ -261,11 +514,26 @@
             // 9월 모의고사 등급분포 기반 전략 (고1·고2·고3). 3월/6월/9월 토글에 연동.
             const ADVISORY_SEP = {
                 G3: { kor: "국어: 9월 1등급 1.9%(6명)로 재수생 유입·난도 상승 속 최상위가 크게 축소됐습니다. 실전 시간관리로 표점 방어에 집중하십시오.", math: "수학: 9월 1등급 2.2%(7명), 4·5등급(141명)이 두텁습니다. 미적분 킬러 대응과 함께 정시 지원선을 재점검할 시점입니다.", eng: "영어: 9월 1등급 15.3%(48명)로 상대적 강세입니다. 수능 최저 충족의 안전판으로 활용하십시오." },
-                G2: { kor: "국어: 9월 평균등급 4.22로 6월(3.98)보다 하락, 4·5등급(76·81명) 밀집이 큽니다. 비문학 구조 독해로 중위권 상향이 시급합니다.", math: "수학: 9월 3등급 이내가 얇아지고 4등급(72명)·5등급(60명)이 두텁습니다. 준킬러 집중 훈련으로 3등급 벽을 넘어야 합니다.", eng: "영어: 1·2등급 비율이 세 회차 내내 개선(16.7%→31.4%)됐습니다. 강점을 수능 최저 충족의 핵심 축으로 삼으십시오." },
+                G2: { kor: "국어: 9월 평균등급 4.22로 6월(3.98)보다 하락, 4·5등급(76·81명) 밀집이 큽니다. 비문학 구조 독해로 중위권 상향이 시급합니다.", math: "수학: 9월 3등급 이내가 얇아지고 4등급(72명)·5등급(60명)이 두텁습니다. 준킬러 집중 훈련으로 3등급 벽을 넘어야 합니다.", eng: "영어: 1·2등급 비율이 28.4%→29.4%→31.3%로 세 회차 내내 개선됐습니다. 강점을 수능 최저 충족의 핵심 축으로 삼으십시오." },
                 G1: { kor: "국어: 9월 1등급 7.2%(25명)로 상위권이 3·6·9월 하락 추세입니다. 비문학 정확도로 1~2등급 회복이 필요합니다.", math: "수학: 9월 1~3등급 239명(1등급 42명)으로 최상위층이 두텁습니다. 4점 고난도 실수 관리로 1등급을 굳히십시오.", eng: "영어: 9월 1등급 15.1%(52명)·1~3등급 212명으로 강세를 유지합니다. 절대평가 90점 고정 루틴을 이어가십시오." }
             };
             const advByPeriod = { '3월': ADVISORY, '6월': ADVISORY_JUNE, '9월': ADVISORY_SEP };
             const advisory = (advByPeriod[effPredPeriod] && advByPeriod[effPredPeriod][activeTab]) ? advByPeriod[effPredPeriod][activeTab] : ADVISORY[activeTab];
+
+            // ── Strategic Insight 확장: 선택 회차의 진학 전문교사 분석 + 핵심 지표(자동 산출) ──
+            const insight = INSIGHT_EXT[activeTab] && INSIGHT_EXT[activeTab][effPredPeriod];
+            const curDetail = detailByPeriod[effPredPeriod];
+            const prevKey = PERIODS_ASC.filter(p => PERIODS_ASC.indexOf(p) < PERIODS_ASC.indexOf(effPredPeriod) && detailByPeriod[p]).pop();
+            const prevDetail = prevKey ? detailByPeriod[prevKey] : null;
+            const metricsRows = curDetail ? ['국어', '수학', '영어'].map(sub => ({
+                sub, c: cumStats(curDetail[sub]), pv: prevDetail ? cumStats(prevDetail[sub]) : null
+            })) : [];
+            const signed = (v, d) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v).toFixed(d);
+            const subjCards = [
+                { key: 'kor', title: 'Korean Strategy', icon: 'Book', color: 'text-indigo-300', border: 'border-indigo-400/30', text: advisory.kor },
+                { key: 'math', title: 'Math Strategy', icon: 'Chart', color: 'text-emerald-300', border: 'border-emerald-400/30', text: advisory.math },
+                { key: 'eng', title: 'English Strategy', icon: 'Zap', color: 'text-amber-300', border: 'border-amber-400/30', text: advisory.eng }
+            ];
 
             return (
                 <div className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto">
@@ -290,6 +558,9 @@
                                 </p>
                             </div>
                         </div>
+                        <a href="https://claude.ai/artifact/R36yGUziP6PZdo5aC8X2V5" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white border border-indigo-100 shadow-sm text-sm font-black text-indigo-700 hover:bg-indigo-50 hover:-translate-y-0.5 transition-all shrink-0">
+                            <span>🗂️</span> 하진수 자료실 · 포트폴리오 <span className="text-indigo-400">→</span>
+                        </a>
                     </header>
 
                     <main className="space-y-12">
@@ -478,26 +749,123 @@
                                         </div>
                                     )}
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm font-bold">
-                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
-                                        <div className="flex items-center gap-3 mb-4 text-indigo-300 font-black uppercase italic tracking-tighter border-b border-indigo-400/30 pb-2">
-                                            <Icon name="Book" size={20} /> Korean Strategy
-                                        </div>
-                                        <p className="leading-relaxed font-medium opacity-90">{advisory.kor}</p>
+                                {insight && (
+                                    <div className="mb-8 p-6 rounded-3xl bg-amber-400/10 border border-amber-300/30">
+                                        <p className="text-[10px] font-black tracking-widest uppercase text-amber-300 mb-2">Head Teacher’s Diagnosis · 진학 전문교사 진단</p>
+                                        <p className="text-base md:text-lg font-bold leading-relaxed">{insight.headline}</p>
                                     </div>
-                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
-                                        <div className="flex items-center gap-3 mb-4 text-emerald-300 font-black uppercase italic tracking-tighter border-b border-emerald-400/30 pb-2">
-                                            <Icon name="Chart" size={20} /> Math Strategy
+                                )}
+
+                                {metricsRows.length > 0 && (
+                                    <div className="mb-8">
+                                        <h4 className="text-xs font-black tracking-widest uppercase text-indigo-200 mb-3">핵심 지표 · {predLabel}{prevKey ? ` (직전 ${prevKey} 대비)` : ''}</h4>
+                                        <div className="overflow-x-auto rounded-2xl border border-white/15 bg-white/5">
+                                            <table className="w-full text-sm tabular-nums">
+                                                <thead>
+                                                    <tr className="text-[11px] uppercase tracking-widest text-indigo-200/80 border-b border-white/10">
+                                                        <th className="py-3 px-4 text-left font-black">영역</th>
+                                                        <th className="py-3 px-4 text-center font-black">1등급</th>
+                                                        <th className="py-3 px-4 text-center font-black">1~2등급 누적</th>
+                                                        <th className="py-3 px-4 text-center font-black">1~3등급 누적</th>
+                                                        <th className="py-3 px-4 text-center font-black">4~5등급</th>
+                                                        <th className="py-3 px-4 text-center font-black">1~3등급 변화</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-white/10">
+                                                    {metricsRows.map(({ sub, c, pv }) => {
+                                                        const dN = pv ? c.n123 - pv.n123 : null;
+                                                        const dP = pv ? c.p123 - pv.p123 : null;
+                                                        const tone = dN == null ? 'text-indigo-200/60' : dN > 0 ? 'text-emerald-300' : dN < 0 ? 'text-rose-300' : 'text-indigo-200/60';
+                                                        return (
+                                                            <tr key={sub}>
+                                                                <td className="py-3 px-4 font-black">{sub}</td>
+                                                                <td className="py-3 px-4 text-center">{c.p1.toFixed(1)}% <span className="text-indigo-200/60 text-xs">({c.n1}명)</span></td>
+                                                                <td className="py-3 px-4 text-center">{c.p12.toFixed(1)}% <span className="text-indigo-200/60 text-xs">({c.n12}명)</span></td>
+                                                                <td className="py-3 px-4 text-center font-black">{c.p123.toFixed(1)}% <span className="text-indigo-200/60 text-xs font-bold">({c.n123}명)</span></td>
+                                                                <td className="py-3 px-4 text-center">{c.p45.toFixed(1)}%</td>
+                                                                <td className={`py-3 px-4 text-center font-black ${tone}`}>{dN == null ? '-' : `${signed(dN, 0)}명 (${signed(dP, 1)}%p)`}</td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <p className="leading-relaxed font-medium opacity-90">{advisory.math}</p>
                                     </div>
-                                    <div className="bg-white/10 p-7 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
-                                        <div className="flex items-center gap-3 mb-4 text-amber-300 font-black uppercase italic tracking-tighter border-b border-amber-400/30 pb-2">
-                                            <Icon name="Zap" size={20} /> English Strategy
+                                )}
+
+                                {insight && (
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                                        {insight.indicators.map((ind, i) => (
+                                            <div key={i} className="rounded-2xl bg-white/10 border border-white/15 p-4">
+                                                <p className="text-[10px] font-black tracking-wider text-indigo-200/80 leading-snug">{ind.label}</p>
+                                                <p className="text-xl font-black mt-1 tracking-tight">{ind.value}</p>
+                                                <p className="text-[11px] text-indigo-200/60 mt-1 font-bold">{ind.sub}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm font-bold mb-8">
+                                    {subjCards.map(card => (
+                                        <div key={card.key} className="bg-white/10 p-6 rounded-3xl border border-white/20 backdrop-blur-lg hover:bg-white/15 transition-all">
+                                            <div className={`flex items-center gap-3 mb-4 ${card.color} font-black uppercase italic tracking-tighter border-b ${card.border} pb-2`}>
+                                                <Icon name={card.icon} size={20} /> {card.title}
+                                            </div>
+                                            <p className="leading-relaxed font-medium opacity-90">{card.text}</p>
+                                            {insight && insight.subj[card.key] && (
+                                                <ul className="space-y-2 mt-4 pt-4 border-t border-white/10">
+                                                    {insight.subj[card.key].map((t, i) => (
+                                                        <li key={i} className="flex gap-2 text-[13px] leading-relaxed font-medium opacity-90">
+                                                            <span className={`${card.color} font-black shrink-0`}>▸</span><span>{t}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
                                         </div>
-                                        <p className="leading-relaxed font-medium opacity-90">{advisory.eng}</p>
-                                    </div>
+                                    ))}
                                 </div>
+
+                                {insight && (
+                                    <div className="mb-8">
+                                        <h4 className="text-xs font-black tracking-widest uppercase text-indigo-200 mb-3">대입 지원 전략 · 진학 지도 포인트</h4>
+                                        <div className="space-y-3">
+                                            {insight.admission.map((a, i) => (
+                                                <div key={i} className="flex flex-col md:flex-row gap-3 rounded-2xl bg-white/5 border border-white/10 p-4">
+                                                    <span className="shrink-0 self-start px-3 py-1 rounded-full bg-amber-400 text-indigo-950 text-xs font-black">{a.tag}</span>
+                                                    <p className="text-[13px] leading-relaxed font-medium opacity-90">{a.text}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {insight && (
+                                    <div className="mb-8">
+                                        <h4 className="text-xs font-black tracking-widest uppercase text-indigo-200 mb-3">실행 로드맵</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            {insight.roadmap.map((r, i) => (
+                                                <div key={i} className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <span className="w-6 h-6 rounded-full bg-emerald-400 text-indigo-950 text-xs font-black flex items-center justify-center">{i + 1}</span>
+                                                        <span className="text-xs font-black text-emerald-300 tracking-wider">{r.when}</span>
+                                                    </div>
+                                                    <p className="text-[13px] leading-relaxed font-medium opacity-90">{r.text}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {insight && (
+                                    <div className="border-l-4 border-amber-400 pl-5 py-1">
+                                        <p className="text-[10px] font-black tracking-widest uppercase text-amber-300 mb-1">진학 전문교사 총평</p>
+                                        <p className="text-sm leading-relaxed font-medium italic opacity-95">{insight.comment}</p>
+                                    </div>
+                                )}
+
+                                <p className="mt-8 text-[10px] text-indigo-200/50 leading-relaxed font-bold italic">
+                                    ※ 핵심 지표표는 학교 응시자 기준 등급 분포에서 자동 산출됩니다. 영역 합은 국·수·영·탐구(우수 1과목) 중 등급이 좋은 순으로 계산했습니다(고1: 원점수·등급컷, 고2: 교육청 분석 자료, 고3: 성적일람표). 고3 6·9월은 졸업생이 합류한 모의평가이므로 3월 학평과 등급의 의미가 다릅니다. 대학별 모집요강·수능최저는 매년 달라질 수 있으니 반드시 해당 연도 요강을 확인하십시오.
+                                </p>
                             </div>
                         </section>
                     </main>
@@ -506,6 +874,8 @@
                         &copy; 2026 DAEJEON DAE SHIN HIGH SCHOOL · ACADEMIC INTELLIGENCE HUB · DATA CONSOLIDATED
                         <br />
                         <span className="mt-2 inline-block italic font-black text-gray-400 underline decoration-indigo-200 underline-offset-4 uppercase tracking-[0.1em]">Created by HA JIN SU</span>
+                        <br />
+                        <a href="https://claude.ai/artifact/R36yGUziP6PZdo5aC8X2V5" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-black text-indigo-500 hover:text-indigo-700 underline decoration-indigo-200 underline-offset-4 tracking-[0.1em]">하진수 자료실 · 포트폴리오 바로가기</a>
                     </footer>
                 </div>
             );
